@@ -13,7 +13,7 @@ end
 
 %% SINGLE CHANNELS
 
-importedData = readmatrix(['input/scan_carica_TH_200.dat']);
+importedData = readmatrix(['input/scan_carica_TH_214.dat']);
 
 ENC = nan(31, 1);
 THR = nan(31, 1);
@@ -22,7 +22,7 @@ for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 200,:);
 
-    f = figure("Visible", "off");
+    f = figure("Visible", "on");
     box on
     grid on
 
@@ -33,21 +33,25 @@ for ch = 0:31
     [f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
     hold off
 
-    val_min = max(X(DATA == 0))
+    val_min = max(X(DATA <= 1))
 
-    if max(DATA) >= 98 & min(DATA) == 0
-        val_max = min(X(DATA >= 98))
+    if max(DATA) >= 100 & min(DATA) <= 1
+        val_max = min(X(DATA >= 100))
         std = val_max - val_min
-        THR(ch+1, 1) = val_min + std/2;
+        THR(ch+1, 1) = val_max - std/2;
         ENC(ch+1, 1) = std/2 * 2.35;
     else
-        ENC(ch+1, 1) = nan;
+        val_min = 0;
+        val_max = min(X(DATA >= 100))
+        std = val_max - val_min
+        THR(ch+1, 1) = val_max - std/2;
+        ENC(ch+1, 1) = std/2 * 2.35;
     end
 
     xlabel('Incoming Energy [keV]');
     ylabel('Hit [\%]');
     title("\textbf{Threshold Scan - Ch. " + num2str(ch) + "}");
-    exportgraphics(gcf, ['output/single_channels_THR_200/Scan di carica - ch ' num2str(ch) '.pdf'], 'ContentType', 'vector');
+    exportgraphics(gcf, ['output/single_channels_THR_214/Scan di carica - ch ' num2str(ch) '.pdf'], 'ContentType', 'vector');
 end
 
 f = figure("Visible", "on");
@@ -58,7 +62,7 @@ hold off
 
 data = [[0:31]', round(THR, 3), round(ENC, 3)];
 data_table = array2table(data, "VariableNames", ["Channel", "Threshold", "ENC"]);
-writetable(data_table, "ENC_THR_data_charge_scan.dat", "Delimiter", "\t")
+writetable(data_table, "ENC_THR_data_charge_scan_THR_214.dat", "Delimiter", "\t")
 
 
 %% ALL CHANNELS

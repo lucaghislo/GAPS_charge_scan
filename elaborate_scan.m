@@ -16,6 +16,7 @@ end
 importedData = readmatrix(['input/scan_carica_TH_200.dat']);
 
 ENC = nan(31, 1);
+THR = nan(31, 1);
 
 for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
@@ -37,7 +38,8 @@ for ch = 0:31
     if max(DATA) >= 98 & min(DATA) == 0
         val_max = min(X(DATA >= 98))
         std = val_max - val_min
-        ENC(ch+1, 1) = std;
+        THR(ch+1, 1) = val_min + std/2;
+        ENC(ch+1, 1) = std/2 * 2.35;
     else
         ENC(ch+1, 1) = nan;
     end
@@ -49,7 +51,14 @@ for ch = 0:31
 end
 
 f = figure("Visible", "on");
+hold on
 plot([0:31], ENC)
+plot([0:31], THR)
+hold off
+
+data = [[0:31]', round(THR, 3), round(ENC, 3)];
+data_table = array2table(data, "VariableNames", ["Channel", "Threshold", "ENC"]);
+writetable(data_table, "ENC_THR_data_charge_scan.dat", "Delimiter", "\t")
 
 
 %% ALL CHANNELS

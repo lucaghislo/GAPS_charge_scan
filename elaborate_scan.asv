@@ -21,26 +21,16 @@ for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 200,:);
 
-    f = figure("Visible", "off");
+    f = figure("Visible", "on");
     box on
     grid on
 
     hold on
-    X = data(:,2)*0.841;
-    DATA =  data(:,4)/10;
-    plot(X, DATA);
+    plot(data(:,2)*0.841, data(:,4)/10);
     [f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
     hold off
 
-    val_min = max(X(DATA == 0))
-
-    if max(DATA) >= 98 & min(DATA) == 0
-        val_max = min(X(DATA >= 98))
-        std = val_max - val_min
-        ENC(ch+1, 1) = std;
-    else
-        ENC(ch+1, 1) = nan;
-    end
+    
 
     xlabel('Incoming Energy [keV]');
     ylabel('Hit [\%]');
@@ -48,7 +38,6 @@ for ch = 0:31
     exportgraphics(gcf, ['output/single_channels/Scan di carica - ch ' num2str(ch) '.pdf'], 'ContentType', 'vector');
 end
 
-f = figure("Visible", "on");
 plot([0:31], ENC)
 
 

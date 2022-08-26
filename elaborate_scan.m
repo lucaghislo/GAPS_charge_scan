@@ -47,7 +47,7 @@ for ch = 0:31
     xlabel('Incoming Energy [keV]');
     ylabel('Hit [\%]');
     title("\textbf{Threshold Scan - Ch. " + num2str(ch) + "}");
-    exportgraphics(gcf, ['output/single_channels/Scan di carica - ch ' num2str(ch) '.pdf'], 'ContentType', 'vector');
+    exportgraphics(gcf, ['output/single_channels_THR_200/Scan di carica - ch ' num2str(ch) '.pdf'], 'ContentType', 'vector');
 end
 
 f = figure("Visible", "on");

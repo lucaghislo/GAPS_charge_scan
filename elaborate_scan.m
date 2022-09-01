@@ -75,23 +75,23 @@ for ch = 0:31
     X = data(:,2)*0.841;
     DATA =  data(:,4)/10;
     plot(X, DATA);
-    [f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
-    hold off
-
-    val_min = max(X(DATA <= 1))
-
-    if max(DATA) >= 100 & min(DATA) <= 1
-        val_max = min(X(DATA >= 100))
-        std = val_max - val_min
-        THR(ch+1, 1) = val_max - std/2;
-        ENC(ch+1, 1) = std/2 * 2.35;
-    else
-        val_min = 0;
-        val_max = min(X(DATA >= 100))
-        std = val_max - val_min
-        THR(ch+1, 1) = val_max - std/2;
-        ENC(ch+1, 1) = std/2 * 2.35;
-    end
+%     [f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
+%     hold off
+% 
+%     val_min = max(X(DATA <= 1))
+% 
+%     if max(DATA) >= 100 & min(DATA) <= 1
+%         val_max = min(X(DATA >= 100))
+%         std = val_max - val_min
+%         THR(ch+1, 1) = val_max - std/2;
+%         ENC(ch+1, 1) = std/2 * 2.35;
+%     else
+%         val_min = 0;
+%         val_max = min(X(DATA >= 100))
+%         std = val_max - val_min
+%         THR(ch+1, 1) = val_max - std/2;
+%         ENC(ch+1, 1) = std/2 * 2.35;
+%     end
 
     xlabel('Incoming Energy [keV]');
     ylabel('Hit [\%]');
@@ -113,18 +113,39 @@ writetable(data_table, "ENC_THR_data_charge_scan_THR_214.dat", "Delimiter", "\t"
 %% ALL CHANNELS
 
 f = figure;
+colors = distinguishable_colors(32, 'w');
+
 hold on
 grid on
-for ch = 0:7
+
+channels = strings(32, 1);
+for ch = 0:31
+    channels(ch+1, 1) = strcat("Channel \#", num2str(ch));
+end
+
+for ch = 16:23
     data = importedData(importedData(:,5)==ch,1:5);
-    data = data(data(:,2) < 200,:);
-    plot(data(:,2)*0.841,data(:,4)/10);
+    data = data(data(:,2) < 300,:);
+    plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
     xlabel('Incoming Energy [keV]');
     ylabel('Hit [\%]');
 end
 
-title(['\textbf{Threshold Scan - Detector \#3 (Ch. 24 - 31)}']);
-save_image('Threshold Scan - Detector 3 - TH200.','pdf',f);
+box on
+grid on
+xlim([0 200])
+yticks([0:10:100])
+xticks([0:10:120])
+legend(channels(17:24), 'Location', 'southeast')
+
+fontsize = 12;
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize; 
+
+%title(['\textbf{Threshold Scan - Detector \#3 (Ch. 24 - 31)}']);
+save_image('Threshold Scan - Detector 2 - TH214.','pdf',f);
 
 
 %% SAVE DATA 

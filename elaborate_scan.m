@@ -118,12 +118,12 @@ colors = distinguishable_colors(32, 'w');
 hold on
 grid on
 
-channels = strings(32, 1);
+channels = strings(8, 1);
 for ch = 0:31
     channels(ch+1, 1) = strcat("Channel \#", num2str(ch));
 end
 
-for ch = 16:23
+for ch = 0:7
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 300,:);
     plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
@@ -133,10 +133,10 @@ end
 
 box on
 grid on
-xlim([0 200])
+xlim([0 80])
 yticks([0:10:100])
-xticks([0:10:120])
-legend(channels(17:24), 'Location', 'southeast')
+%xticks([0:10:120])
+legend(channels(1:8), 'Location', 'southeast')
 
 fontsize = 12;
 ax = gca; 
@@ -145,7 +145,7 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize; 
 
 %title(['\textbf{Threshold Scan - Detector \#3 (Ch. 24 - 31)}']);
-save_image('Threshold Scan - Detector 2 - TH214.','pdf',f);
+save_image('Threshold Scan - Detector 0 - TH214.','pdf',f);
 
 
 %% SAVE DATA 

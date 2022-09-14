@@ -13,7 +13,7 @@ end
 
 %% SINGLE CHANNELS (THR = 200)
 
-importedData = readmatrix(['input/scan_carica_TH_200.dat']);
+importedData = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
 
 ENC = nan(31, 1);
 THR = nan(31, 1);
@@ -47,18 +47,18 @@ end
 
 f = figure("Visible", "on");
 hold on
-plot([0:31], ENC)
-plot([0:31], THR)
+plot([0:7], ENC(1:8))
+plot([0:7], THR(1:8))
 hold off
 
-data = [[0:31]', round(THR, 3), round(ENC, 3)];
+data = [[0:7]', round(THR(1:8), 3), round(ENC(1:8), 3)];
 data_table = array2table(data, "VariableNames", ["Channel", "Threshold", "ENC"]);
 writetable(data_table, "ENC_THR_data_charge_scan_THR_200.dat", "Delimiter", "\t")
 
 
 %% SINGLE CHANNELS (THR = 214)
 
-importedData = readmatrix(['input/scan_carica_TH_214.dat']);
+importedData = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
 
 ENC = nan(31, 1);
 THR = nan(31, 1);
@@ -115,6 +115,8 @@ writetable(data_table, "ENC_THR_data_charge_scan_THR_214.dat", "Delimiter", "\t"
 f = figure;
 colors = distinguishable_colors(32, 'w');
 
+importedData = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']);
+
 hold on
 grid on
 
@@ -123,7 +125,7 @@ for ch = 0:31
     channels(ch+1, 1) = strcat("Channel \#", num2str(ch));
 end
 
-for ch = 0:7
+for ch = 24:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 300,:);
     plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
@@ -136,7 +138,7 @@ grid on
 xlim([0 80])
 yticks([0:10:100])
 %xticks([0:10:120])
-legend(channels(1:8), 'Location', 'southeast')
+legend(channels(25:32), 'Location', 'southeast')
 
 fontsize = 12;
 ax = gca; 
@@ -145,7 +147,7 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize; 
 
 %title(['\textbf{Threshold Scan - Detector \#3 (Ch. 24 - 31)}']);
-save_image('Threshold Scan - Detector 0 - TH214.','pdf',f);
+save_image('Threshold Scan - Detector 3 - TH214.','pdf',f);
 
 
 %% SAVE DATA 

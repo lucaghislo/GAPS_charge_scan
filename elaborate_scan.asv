@@ -86,7 +86,7 @@ for ch = 0:7
     [f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
     hold off
 
-    %val_min = max(X(DATA <= 1))
+    val_min = max(X(DATA <= 1))
 
 %     if max(DATA) >= 100 & min(DATA) <= 1
 %         val_max = min(X(DATA >= 100))
@@ -101,10 +101,7 @@ for ch = 0:7
 %         ENC(ch+1, 1) = std/2 * 2.35;
 %     end
 
-    X = X(1:200);
-    DATA = DATA(1:200);
-
-    val_min = max(X(DATA<=0));
+    val_min = ;
     val_max = min(X(DATA >= 100))
     std = val_max - val_min
     THR(ch+1, 1) = val_min + std/2;
@@ -141,7 +138,7 @@ importedDataTemp3 = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']
 
 importedData = [importedDataTemp0; importedDataTemp1; importedDataTemp2; importedDataTemp3];
 
-importedData = readmatrix(['input/14092022/charge_scan_14092022.dat']);
+%importedData = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']);
 
 hold on
 grid on
@@ -181,20 +178,10 @@ save_image('Threshold Scan - All detectors - TH214.','pdf',f);
 myFitType = fittype(@(a,b,x) 500 + 500*erf((x-a)/(sqrt(2)*b)));
 
 results = [];
-for ch = 0:7
+for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     myFit = fit(data(:,2)*0.841,data(:,4),myFitType,'Lower',[0,0],'Upper',[Inf,Inf],'StartPoint',[20 1]);
     results = [results; ch coeffvalues(myFit)];
 end
 
-writematrix(results,'output/data_files/a,b.dat');
-
-f = figure()
-hold on
-%plot(results(:, 1), results(:, 2))
-plot(results(:, 1), results(:, 3).*2.35)
-
-results(:, 3) = results(:, 3) .* 2.35;
-
-data_table = array2table(results, "VariableNames", ["Channel", "Threshold", "ENC"]);
-writetable(data_table, "ENC_THR_data_charge_scan_THR_214.dat", "Delimiter", "\t")
+writematrix(results,'/data_files/a,b.dat');

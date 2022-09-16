@@ -58,6 +58,8 @@ writetable(data_table, "ENC_THR_data_charge_scan_THR_200.dat", "Delimiter", "\t"
 
 %% SINGLE CHANNELS (THR = 214)
 
+clear; clc;
+
 importedDataTemp0 = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
 importedDataTemp1 = readmatrix(['input/14092022/charge_scan_14092022_sens1.dat']);
 importedDataTemp2 = readmatrix(['input/14092022/charge_scan_14092022_sens2.dat']);
@@ -65,12 +67,12 @@ importedDataTemp3 = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']
 
 importedData = [importedDataTemp0; importedDataTemp1; importedDataTemp2; importedDataTemp3];
 
-%importedData = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
+importedData = readmatrix(['input/14092022/charge_scan_14092022_sens1.dat']);
 
 ENC = nan(31, 1);
 THR = nan(31, 1);
 
-for ch = 0:7
+for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 200,:);
 
@@ -81,9 +83,9 @@ for ch = 0:7
     hold on
     X = data(:,2)*0.841;
     DATA =  data(:,4)/10;
-    plot(X(1:200), DATA(1:200));
+    plot(X, DATA);
 
-    [f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
+    %[f, x, flo, fup] = ecdf(data(:,4)/10, 'Bounds','on');
     hold off
 
     %val_min = max(X(DATA <= 1))
@@ -134,24 +136,24 @@ clear; clc;
 f = figure;
 colors = distinguishable_colors(32, 'w');
 
-importedDataTemp0 = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
-importedDataTemp1 = readmatrix(['input/14092022/charge_scan_14092022_sens1.dat']);
-importedDataTemp2 = readmatrix(['input/14092022/charge_scan_14092022_sens2.dat']);
-importedDataTemp3 = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']);
+% importedDataTemp0 = readmatrix(['input/15092022/scan_carica_sens0_1509.dat']);
+% importedDataTemp1 = readmatrix(['input/15092022/scan_carica_sens1_1509.dat']);
+% importedDataTemp2 = readmatrix(['input/15092022/scan_carica_sens2_1509.dat']);
+% importedDataTemp3 = readmatrix(['input/15092022/scan_carica_sens3_1509.dat']);
+% 
+% importedData = [importedDataTemp0; importedDataTemp1; importedDataTemp2; importedDataTemp3];
 
-importedData = [importedDataTemp0; importedDataTemp1; importedDataTemp2; importedDataTemp3];
-
-importedData = readmatrix(['input/14092022/charge_scan_14092022.dat']);
+importedData = readmatrix(['input/15092022/scan_carica_allch_1509.dat']);
 
 hold on
 grid on
 
 channels = strings(8, 1);
-for ch = 0:31
+for ch = 0:7
     channels(ch+1, 1) = strcat("Channel \#", num2str(ch));
 end
 
-for ch = 0:31
+for ch = 0:7
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 300,:);
     plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
@@ -181,7 +183,7 @@ save_image('Threshold Scan - All detectors - TH214.','pdf',f);
 myFitType = fittype(@(a,b,x) 500 + 500*erf((x-a)/(sqrt(2)*b)));
 
 results = [];
-for ch = 0:7
+for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     myFit = fit(data(:,2)*0.841,data(:,4),myFitType,'Lower',[0,0],'Upper',[Inf,Inf],'StartPoint',[20 1]);
     results = [results; ch coeffvalues(myFit)];

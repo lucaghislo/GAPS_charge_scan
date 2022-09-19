@@ -127,31 +127,24 @@ data_table = array2table(data, "VariableNames", ["Channel", "Threshold", "ENC"])
 writetable(data_table, "ENC_THR_data_charge_scan_THR_214_sens1.dat", "Delimiter", "\t")
 
 
-%% ALL CHANNELS
+%% ALL CHANNELS (sei nella sezione giusta)
 
 clear; clc;
 
 f = figure;
 colors = distinguishable_colors(32, 'w');
 
-% importedDataTemp0 = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
-% importedDataTemp1 = readmatrix(['input/14092022/charge_scan_14092022_sens1.dat']);
-% importedDataTemp2 = readmatrix(['input/14092022/charge_scan_14092022_sens2.dat']);
-% importedDataTemp3 = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']);
-% 
-% importedData = [importedDataTemp0; importedDataTemp1; importedDataTemp2; importedDataTemp3];
-
-importedData = readmatrix(['input/14092022/charge_scan_14092022_sens3.dat']);
+importedData = readmatrix(['input/19092022/charge_scan_sens3_19092022.dat']);
 
 hold on
 grid on
 
 channels = strings(32, 1);
-for ch = 0:31
-    channels(ch+1, 1) = strcat("Channel \#", num2str(ch));
+for ch = 0:7
+    channels(ch+1, 1) = strcat("Ch. ", num2str(ch+24));
 end
 
-for ch = 0:31
+for ch = 24:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 300,:);
     plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
@@ -163,8 +156,7 @@ box on
 grid on
 xlim([0 80])
 yticks([0:10:100])
-%xticks([0:10:120])
-legend(channels(1:32), 'Location', 'eastoutside', 'NumColumns', 2)
+legend(channels(1:32), 'Location', 'eastoutside', 'NumColumns', 1)
 
 fontsize = 12;
 ax = gca; 
@@ -172,18 +164,16 @@ ax.XAxis.FontSize = fontsize;
 ax.YAxis.FontSize = fontsize; 
 ax.Legend.FontSize = fontsize; 
 
-%title(['\textbf{Threshold Scan - Detector \#3 (Ch. 24 - 31)}']);
-save_image('Threshold Scan - All detectors - TH214.','pdf',f);
+f.Position = [200 160 900  550];
+save_image('output/19092022/Threshold Scan - sens3 - TH214.','pdf',f);
 
 
 %% SAVE DATA 
 
-importedData = readmatrix(['input/14092022/charge_scan_14092022.dat']);
-
 myFitType = fittype(@(a,b,x) 500 + 500*erf((x-a)/(sqrt(2)*b)));
 
 results = [];
-for ch = 0:31
+for ch = 24:31
     data = importedData(importedData(:,5)==ch,1:5);
     myFit = fit(data(:,2)*0.841,data(:,4),myFitType,'Lower',[0,0],'Upper',[Inf,Inf],'StartPoint',[20 1]);
     results = [results; ch coeffvalues(myFit)];
@@ -193,10 +183,8 @@ writematrix(results,'output/data_files/a,b.dat');
 
 f = figure()
 hold on
-%plot(results(:, 1), results(:, 2))
 plot(results(:, 1), results(:, 3).*2.35)
-
 results(:, 3) = results(:, 3) .* 2.35;
 
 data_table = array2table(results, "VariableNames", ["Channel", "Threshold", "ENC"]);
-writetable(data_table, "ENC_THR_data_charge_scan_THR_214_sens3.dat", "Delimiter", "\t")
+writetable(data_table, "output/19092022/ENC_THR_charge_scan_sens3_TH214.dat", "Delimiter", "\t")

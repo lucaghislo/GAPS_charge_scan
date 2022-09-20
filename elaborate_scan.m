@@ -168,6 +168,63 @@ f.Position = [200 160 900  550];
 save_image('output/19092022/Threshold Scan - sens3 - TH214.','pdf',f);
 
 
+%% ALL CHANNELS (variando FTHR su singolo canale)
+
+clear; clc;
+
+f = figure;
+colors = distinguishable_colors(8, 'w');
+
+for thr = 0:7
+    thr_bin = dec2bin(thr,3)
+    importedData = readmatrix(['input/20092022/channel0/TH200/charge_scan_ch0_THR_200_FTHR_', thr_bin, '.dat']);
+
+    hold on
+    grid on
+    
+    channels = strings(32, 1);
+    for ch = 0
+        channels(ch+1, 1) = strcat("Ch. ", num2str(ch+24));
+    end
+    
+    for ch = 0
+        data = importedData(importedData(:,5)==ch,1:5);
+        data = data(data(:,2) < 300,:);
+        plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(thr+1, 1), colors(thr+1, 2), colors(thr+1, 3)]);
+        xlabel('Incoming Energy [keV]');
+        ylabel('Hit [\%]');
+    end
+    
+    box on
+    grid on
+    title("\textbf{Channel 0 (THR: 200)}")
+    %xlim([0 80])
+    %yticks([0:10:100])
+    %legend(channels(1:32), 'Location', 'eastoutside', 'NumColumns', 1)
+    
+    fontsize = 12;
+    ax = gca; 
+    ax.XAxis.FontSize = fontsize; 
+    ax.YAxis.FontSize = fontsize; 
+    %ax.Legend.FontSize = fontsize; 
+end
+
+legend_str  = strings(8, 1)
+for thr = 0:7
+    legend_str(thr+1) = "FTHR: " + dec2bin(thr,3);
+end
+
+legend(legend_str)
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize;
+
+f.Position = [200 160 900  550];
+save_image('output/20092022/channel0/Charge Scan - ch0_FTHR - TH200.','pdf',f);
+
+
 %% SAVE DATA 
 
 myFitType = fittype(@(a,b,x) 500 + 500*erf((x-a)/(sqrt(2)*b)));

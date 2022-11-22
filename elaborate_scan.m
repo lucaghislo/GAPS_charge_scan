@@ -13,7 +13,8 @@ end
 
 %% SINGLE CHANNELS (THR = 200)
 
-importedData = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
+%importedData = readmatrix(['input/14092022/charge_scan_14092022_sens0.dat']);
+importedData = readmatrix(['input/F034I_napoli/charge_scan_nofthr.dat']);
 
 ENC = nan(31, 1);
 THR = nan(31, 1);
@@ -134,17 +135,21 @@ clear; clc;
 f = figure;
 colors = distinguishable_colors(32, 'w');
 
-importedData = readmatrix(['input/19092022/charge_scan_sens3_19092022.dat']);
+% importedData = readmatrix(['input/19092022/charge_scan_sens3_19092022.dat']);
+% importedData = readmatrix(['input/F034I_napoli/charge_scan_nofthr_THR_200.dat']);
+% importedData = readmatrix(['input/F034I_napoli/charge_scan_fthr_THR_200.dat']);
+% importedData = readmatrix(['input/F034I_napoli/charge_scan_fthr_THR_200_det3.dat']);
+importedData = readmatrix(['input/F034I_napoli/charge_scan_fthr_THR_214.dat']);
 
 hold on
 grid on
 
 channels = strings(32, 1);
-for ch = 0:7
-    channels(ch+1, 1) = strcat("Ch. ", num2str(ch+24));
+for ch = 0:31
+    channels(ch+1, 1) = strcat("Ch. ", num2str(ch));
 end
 
-for ch = 24:31
+for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 300,:);
     plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
@@ -154,9 +159,9 @@ end
 
 box on
 grid on
-xlim([0 80])
+%xlim([0 80])
 yticks([0:10:100])
-legend(channels(1:32), 'Location', 'eastoutside', 'NumColumns', 1)
+legend(channels(1:32), 'Location', 'eastoutside', 'NumColumns', 2)
 
 fontsize = 12;
 ax = gca; 
@@ -165,7 +170,7 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize; 
 
 f.Position = [200 160 900  550];
-save_image('output/19092022/Threshold Scan - sens3 - TH214.','pdf',f);
+save_image('output/F034I_napoli/all_detectors_fthr_THR_214.', 'pdf',f);
 
 
 %% ALL CHANNELS (variando FTHR su singolo canale)

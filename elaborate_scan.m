@@ -154,12 +154,21 @@ for ch = 0:31
     channels(ch+1, 1) = strcat("Ch. ", num2str(ch));
 end
 
+data = importedData(importedData(:,5)==0,1:5);
+data = data(data(:,2) < 300,:);
+data_out = data(:,4)/10;
+
+data_table_out = nan(length(data), 33);
+data_table_out(:, 1) = data(:,2)*0.841;
+
 for ch = 0:31
     data = importedData(importedData(:,5)==ch,1:5);
     data = data(data(:,2) < 300,:);
-    plot(data(:,2)*0.841,data(:,4)/10, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
+    data_out = data(:,4)/10;
+    plot(data(:,2)*0.841, data_out, 'Color', [colors(ch+1, 1), colors(ch+1, 2), colors(ch+1, 3)]);
     xlabel('Incoming Energy [keV]');
     ylabel('Hit [\%]');
+    data_table_out(:, ch+2) = data_out;
 end
 
 box on
@@ -168,7 +177,7 @@ grid on
 yticks([0:10:100])
 ylim([0, 100])
 legend(channels(1:32), 'Location', 'eastoutside', 'NumColumns', 2)
-title("\textbf{IT\_L4R0M5\_Gigi\_m27C\_charge\_scan\_THR\_205\_noFTH}")
+title("\textbf{IT\_L4R0M0\_Gigi\_m27.2C\_charge\_scan\_THR\_205\_noFTH}")
 
 fontsize = 12;
 ax = gca; 
@@ -177,7 +186,10 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize; 
 
 f.Position = [200 160 900  550];
-save_image('output/SSL_Berkeley/IT_L4R0M5_Gigi_m27C_charge_scan_THR_205_noFTH.', 'pdf',f);
+%save_image('output/SSL_Berkeley/IT_L4R0M0_Gigi_m27.2C_charge_scan_THR_205_noFTH.', 'pdf',f);
+
+writematrix(data_table_out, "C:\Users\ghisl\Documents\GitHub\charge_scan_elaboration_plots\output\SSL_Berkeley\data\" + ...
+    "IT_L4R0M5_Gigi_m27C_charge_scan_THR_205_noFTH.dat", "Delimiter", "\t")
 
 
 %% ALL CHANNELS (variando FTHR su singolo canale)

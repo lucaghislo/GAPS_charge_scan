@@ -21,7 +21,7 @@ filename_3 = "IT_L4R0M3_Gigi_charge_scan_THR_205_FTH_MX.dat"
 filename_4 = "IT_L4R0M4_Gigi_charge_scan_THR_205_FTH_MX.dat"
 filename_5 = "IT_L4R0M5_Gigi_charge_scan_THR_205_FTH_MX.dat"
 
-filename = filename_4
+filename = filename_5
 filepath = os.path.join("output\SSL_Berkeley\FTH\data", filename)
 
 # Open file in read mode

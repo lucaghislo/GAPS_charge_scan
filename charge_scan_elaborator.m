@@ -60,6 +60,7 @@ ax.Legend.FontSize = fontsize;
 
 f.Position = [200 160 900  550];
 exportgraphics(gcf, "output\SSL_Berkeley\FTH\" + string(filename) + ".pdf", 'ContentType','vector');
+exportgraphics(gcf, "output\SSL_Berkeley\FTH\" + string(filename) + ".png", 'ContentType','vector');
 writematrix(data_table_out, "output\SSL_Berkeley\FTH\data\" + string(filename) + ".dat", "Delimiter", "\t");
 
 disp("Exported: " + string(filename))

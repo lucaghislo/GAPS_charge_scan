@@ -147,19 +147,8 @@ clear; clc;
 f = figure;
 colors = distinguishable_colors(32, 'w');
 
-% importedData = readmatrix(['input/19092022/charge_scan_sens3_19092022.dat']);
-% importedData = readmatrix(['input/F034I_napoli/charge_scan_nofthr_THR_200.dat']);
-% importedData = readmatrix(['input/F034I_napoli/charge_scan_fthr_THR_200.dat']);
-% importedData = readmatrix(['input/F034I_napoli/charge_scan_fthr_THR_200_det3.dat']);
-%importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M0_Gigi_m27.2C_charge_scan_THR_205_noFTH.dat']);
-% importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M1_Gigi_m30.4C_charge_scan_THR_205_noFTH.dat']);
-% importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M2_Gigi_m29.6C_charge_scan_THR_205_noFTH.dat']);
-% importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M3_Gigi_m29.6C_charge_scan_THR_205_noFTH.dat']);
-% importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M4_Gigi_m29.7C_charge_scan_THR_205_noFTH.dat']);
-%importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M5_Gigi_m27C_charge_scan_THR_205_noFTH.dat']);
-importedData = readmatrix(['input/SSL_Berkeley/IT_L4R0M5_Gigi_charge_scan_THR_206_FTH.dat']);
-
-filename = 'IT_L4R0M5_Gigi_charge_scan_THR_206_FTH'
+filename = 'IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX'
+importedData = readmatrix(['input/SSL_Berkeley/FTH/', filename, '.dat']);
 
 hold on
 grid on
@@ -201,10 +190,8 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize; 
 
 f.Position = [200 160 900  550];
-print(["output\SSL_Berkeley\", string(filename), "."])
-save_image(["output\SSL_Berkeley\", string(filename), "."], "pdf", f);
-
-writematrix(data_table_out, ["C:\Users\ghisl\Documents\GitHub\charge_scan_elaboration_plots\output\SSL_Berkeley\data\", string(filename), ".dat"], "Delimiter", "\t")
+exportgraphics(gcf, "output\SSL_Berkeley\FTH\" + string(filename) + ".pdf", 'ContentType','vector');
+writematrix(data_table_out, "output\SSL_Berkeley\FTH\data\" + string(filename) + ".dat", "Delimiter", "\t")
 
 
 %% ALL CHANNELS (variando FTHR su singolo canale)

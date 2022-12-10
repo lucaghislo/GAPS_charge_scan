@@ -14,15 +14,15 @@ filename_3 = "IT_L4R0M3_Gigi_m29.6C_charge_scan_THR_205_noFTH.dat"
 filename_4 = "IT_L4R0M4_Gigi_m29.7C_charge_scan_THR_205_noFTH.dat"
 filename_5 = "IT_L4R0M5_Gigi_m27C_charge_scan_THR_205_noFTH.dat"
 
-filename_0 = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX.dat"
-filename_1 = "IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_MX.dat"
-filename_2 = "IT_L4R0M2_Gigi_charge_scan_THR_205_FTH_MX.dat"
-filename_3 = "IT_L4R0M3_Gigi_charge_scan_THR_205_FTH_MX.dat"
-filename_4 = "IT_L4R0M4_Gigi_charge_scan_THR_205_FTH_MX.dat"
-filename_5 = "IT_L4R0M5_Gigi_charge_scan_THR_205_FTH_MX.dat"
+# filename_0 = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX.dat"
+# filename_1 = "IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_MX.dat"
+# filename_2 = "IT_L4R0M2_Gigi_charge_scan_THR_205_FTH_MX.dat"
+# filename_3 = "IT_L4R0M3_Gigi_charge_scan_THR_205_FTH_MX.dat"
+# filename_4 = "IT_L4R0M4_Gigi_charge_scan_THR_205_FTH_MX.dat"
+# filename_5 = "IT_L4R0M5_Gigi_charge_scan_THR_205_FTH_MX.dat"
 
 filename = filename_5
-filepath = os.path.join("output\SSL_Berkeley\FTH\data", filename)
+filepath = os.path.join("output\SSL_Berkeley\data", filename)  # \FTH\
 
 # Open file in read mode
 data = pd.read_csv(
@@ -68,7 +68,7 @@ parameters = parameters[1:, :]
 # Write parameters to file
 with open(
     os.path.join(
-        "output\SSL_Berkeley\erf_fit_results\FTH\data", filename + "_THR_ENC.dat"
+        "output\SSL_Berkeley\erf_fit_results\data", filename + "_THR_ENC.dat"  # \FTH\
     ),
     "w",
 ) as filehandle:
@@ -98,16 +98,22 @@ plt.title(
 )
 plt.xlabel("Threshold [keV]")
 plt.ylabel("Count")
-plt.savefig("output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_thresholds.pdf")
-plt.savefig("output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_thresholds.png")
+plt.savefig(
+    "output\SSL_Berkeley\erf_fit_results\\" + filename + "_thresholds.pdf"
+)  # \FTH\
+plt.savefig(
+    "output\SSL_Berkeley\erf_fit_results\\" + filename + "_thresholds.png"
+)  # \FTH\
 
 
 # Plot ENC derived from charge scan
 plt.clf()
 plt.plot(range(0, 32), parameters[:, 1], marker="o")
+plt.xlabel("Channel")
+plt.ylabel("ENC [keV]")
 plt.title(
     "ENC from Charge Scan\n" + str(filename),
     fontweight="bold",
 )
-plt.savefig("output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_ENC.pdf")
-plt.savefig("output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_ENC.png")
+plt.savefig("output\SSL_Berkeley\erf_fit_results\\" + filename + "_ENC.pdf")
+plt.savefig("output\SSL_Berkeley\erf_fit_results\\" + filename + "_ENC.png")

@@ -30,7 +30,7 @@ filename_203 = "IT_L4R0M1_Gigi_charge_scan_THR_203_FTH_LG"
 filename_205 = "IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_LG"
 filename_207 = "IT_L4R0M1_Gigi_charge_scan_THR_207_FTH_LG"
 
-filename = filename_207
+filename = filename_203
 path_in = filename + ".dat"
 filepath = os.path.join("output\SSL_Berkeley\FTH\L4R0M1\data", path_in)  # \FTH\
 

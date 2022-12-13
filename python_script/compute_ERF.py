@@ -7,6 +7,7 @@ from erf_function import *
 import scipy as sp
 from scipy.stats import norm
 
+# Layer 4 Row 0 Module without fine trimming
 filename_0 = "IT_L4R0M0_Gigi_m27.2C_charge_scan_THR_205_noFTH"
 filename_1 = "IT_L4R0M1_Gigi_m30.4C_charge_scan_THR_205_noFTH"
 filename_2 = "IT_L4R0M2_Gigi_m29.6C_charge_scan_THR_205_noFTH"
@@ -14,16 +15,24 @@ filename_3 = "IT_L4R0M3_Gigi_m29.6C_charge_scan_THR_205_noFTH"
 filename_4 = "IT_L4R0M4_Gigi_m29.7C_charge_scan_THR_205_noFTH"
 filename_5 = "IT_L4R0M5_Gigi_m27C_charge_scan_THR_205_noFTH"
 
+# Layer 4 Row 0 Module with fine trimming
 filename_0 = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX"
-filename_1 = "IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_MX"
+filename_1 = "IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_MX"  # Wrong FTH values
 filename_2 = "IT_L4R0M2_Gigi_charge_scan_THR_205_FTH_MX"
 filename_3 = "IT_L4R0M3_Gigi_charge_scan_THR_205_FTH_MX"
 filename_4 = "IT_L4R0M4_Gigi_charge_scan_THR_205_FTH_MX"
 filename_5 = "IT_L4R0M5_Gigi_charge_scan_THR_205_FTH_MX"
 
-filename = filename_5
+# Layer 4 Row 0 Module 1 with fine trimming and different threshold values
+filename_200 = "IT_L4R0M1_Gigi_charge_scan_THR_200_FTH_LG"
+filename_201 = "IT_L4R0M1_Gigi_charge_scan_THR_201_FTH_LG"
+filename_203 = "IT_L4R0M1_Gigi_charge_scan_THR_203_FTH_LG"
+filename_205 = "IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_LG"
+filename_207 = "IT_L4R0M1_Gigi_charge_scan_THR_207_FTH_LG"
+
+filename = filename_207
 path_in = filename + ".dat"
-filepath = os.path.join("output\SSL_Berkeley\FTH\data", path_in)  # \FTH\
+filepath = os.path.join("output\SSL_Berkeley\FTH\L4R0M1\data", path_in)  # \FTH\
 
 # Open file in read mode
 data = pd.read_csv(
@@ -69,7 +78,7 @@ parameters = parameters[1:, :]
 # Write parameters to file
 with open(
     os.path.join(
-        "output\SSL_Berkeley\erf_fit_results\FTH\data",
+        "output\SSL_Berkeley\erf_fit_results\FTH\L4R0M1\data",
         filename + "_THR_ENC.dat",  # \FTH\
     ),
     "w",
@@ -101,10 +110,10 @@ plt.title(
 plt.xlabel("Threshold [keV]")
 plt.ylabel("Count")
 plt.savefig(
-    "output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_thresholds.pdf"
+    "output\SSL_Berkeley\erf_fit_results\FTH\L4R0M1\\" + filename + "_thresholds.pdf"
 )  # \FTH\
 plt.savefig(
-    "output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_thresholds.png"
+    "output\SSL_Berkeley\erf_fit_results\FTH\L4R0M1\\" + filename + "_thresholds.png"
 )  # \FTH\
 
 
@@ -118,8 +127,8 @@ plt.title(
     fontweight="bold",
 )
 plt.savefig(
-    "output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_ENC.pdf"
+    "output\SSL_Berkeley\erf_fit_results\FTH\L4R0M1\\" + filename + "_ENC.pdf"
 )  # \FTH\
 plt.savefig(
-    "output\SSL_Berkeley\erf_fit_results\FTH\\" + filename + "_ENC.png"
+    "output\SSL_Berkeley\erf_fit_results\FTH\L4R0M1\\" + filename + "_ENC.png"
 )  # \FTH\

@@ -14,8 +14,8 @@ end
 clear; clc;
 
 % Choose charge scan to compute
-filename = 'IT_L4R0M5_Gigi_charge_scan_THR_205_FTH_MX';
-importedData = readmatrix(['input/SSL_Berkeley/FTH/', filename, '.dat']);
+filename = 'IT_L4R0M1_Gigi_charge_scan_THR_205_FTH_LG';
+importedData = readmatrix(['input\SSL_Berkeley\FTH\L4R0M1\', filename, '.dat']);
 
 f = figure;
 colors = distinguishable_colors(32, 'w');
@@ -59,8 +59,9 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize; 
 
 f.Position = [200 160 900  550];
-exportgraphics(gcf, "output\SSL_Berkeley\FTH\" + string(filename) + ".pdf", 'ContentType','vector');
-exportgraphics(gcf, "output\SSL_Berkeley\FTH\" + string(filename) + ".png", 'ContentType','vector');
-writematrix(data_table_out, "output\SSL_Berkeley\FTH\data\" + string(filename) + ".dat", "Delimiter", "\t");
+exportgraphics(gcf, "output\SSL_Berkeley\FTH\L4R0M1\" + string(filename) + ".pdf", 'ContentType','vector');
+exportgraphics(gcf, "output\SSL_Berkeley\FTH\L4R0M1\" + string(filename) + ".png", 'ContentType','vector');
+writematrix(data_table_out, "output\SSL_Berkeley\FTH\L4R0M1\" + ...
+    "data\" + string(filename) + ".dat", "Delimiter", "\t");
 
 disp("Exported: " + string(filename))

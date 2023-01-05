@@ -32,7 +32,7 @@ filename_207 = "IT_L4R0M1_Gigi_charge_scan_THR_207_FTH_LG"
 
 filename = filename_203
 path_in = filename + ".dat"
-filepath = os.path.join("output\SSL_Berkeley\FTH\L4R0M1\data", path_in)  # \FTH\
+filepath = os.path.join(r"output\SSL_Berkeley\FTH\L4R0M1\data", path_in)  # \FTH\
 
 # Open file in read mode
 data = pd.read_csv(

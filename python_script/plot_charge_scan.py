@@ -6,10 +6,11 @@ from scipy.stats import norm
 
 from plot_config import *
 from error_function_calculator import compute_ERF
+from erf_function import *
 
 # Configuration
 filename = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX"
-ch_min = 24
+ch_min = 0
 ch_max = 31
 
 # LaTex interpreter
@@ -125,12 +126,10 @@ for ch in channels:
 
     parameters = np.vstack([parameters, [mu, sigma]])
     print("channel " + str(ch) + " -> mu: " + str(mu) + "\tsigma: " + str(sigma))
-
     print("Saved ch. " + str(ch))
 
-
 parameters = parameters[1:, :]
-ENC_THR_folder = os.path.join(output_folder, "ENC_THR")
+ENC_THR_folder = os.path.join(output_folder_spec, "ENC_THR")
 
 if not os.path.exists(ENC_THR_folder):
     os.mkdir(ENC_THR_folder)
@@ -149,30 +148,23 @@ with open(
 ) as filehandle:
     for i in range(0, len(channels)):
         print("Parameter: " + str(parameters[i, 0]))
-        filehandle.write("%f %f\n" % (parameters[i, 0], parameters[i, 1]))
+        filehandle.write(
+            "%d\t%f\t\t%f\n" % (channels[i], parameters[i, 0], parameters[i, 1])
+        )
 
 # Plot histogram of threshold data
 plt.clf()
 data = parameters[:, 0]
-binwidth = 10
 plot_data = [int(data_i) for data_i in data]
 plt.hist(
     data,
-    bins=range(min(plot_data), max(plot_data) + binwidth, binwidth),
-    edgecolor="black",
 )
-# Plot the PDF
-xmin, xmax = plt.xlim()
-mu, std = norm.fit(data)
-x = np.linspace(xmin - 15, xmax + 15, 100)
-p = norm.pdf(x, mu, std) * 320
-# plt.plot(x, p, "k", linewidth=2)
 plt.title(
-    "Channel Threshold\n" + str(ENC_THR_folder),
-    fontweight="bold",
+    r"\textbf{Thresholds from charge scan}",
 )
 plt.xlabel("Threshold [keV]")
 plt.ylabel("Count")
+
 plt.savefig(
     os.path.join(
         ENC_THR_folder,
@@ -186,13 +178,13 @@ plt.savefig(
 
 # Plot ENC derived from charge scan
 plt.clf()
-plt.plot(range(0, 32), parameters[:, 1], marker="o")
+plt.plot(range(0, len(channels)), parameters[:, 1], marker="o")
 plt.xlabel("Channel")
 plt.ylabel("ENC [keV]")
 plt.title(
-    "ENC from Charge Scan\n" + str(ENC_THR_folder),
-    fontweight="bold",
+    r"\textbf{ENC from Charge Scan}",
 )
+
 plt.savefig(
     os.path.join(
         ENC_THR_folder,

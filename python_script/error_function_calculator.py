@@ -1,9 +1,11 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import os.path
-from erf_function import *
 import scipy as sp
 from scipy.stats import norm
+
+from erf_function import *
+
 
 # INPUT PARAMETERS
 # x: DAC_inj converted in keV

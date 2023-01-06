@@ -2,8 +2,10 @@ import os as os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from scipy.stats import norm
 
 from plot_config import *
+from error_function_calculator import compute_ERF
 
 # Configuration
 filename = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX"
@@ -85,6 +87,8 @@ allch_filename = os.path.join(
 plt.savefig(allch_filename)
 print("Saved: " + allch_filename + "\n")
 
+parameters = np.zeros([1, 2])
+
 # Save single channels
 output_folder_spec_single = os.path.join(output_folder_spec, "single_channels")
 if not os.path.exists(output_folder_spec_single):
@@ -116,4 +120,82 @@ for ch in channels:
             "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + ".pdf",
         )
     )
+
+    (mu, sigma) = compute_ERF(inj_range, events)
+
+    parameters = np.vstack([parameters, [mu, sigma]])
+    print("channel " + str(ch) + " -> mu: " + str(mu) + "\tsigma: " + str(sigma))
+
     print("Saved ch. " + str(ch))
+
+
+parameters = parameters[1:, :]
+ENC_THR_folder = os.path.join(output_folder, "ENC_THR")
+
+if not os.path.exists(ENC_THR_folder):
+    os.mkdir(ENC_THR_folder)
+
+# Write parameters to file
+with open(
+    os.path.join(
+        ENC_THR_folder,
+        "ch"
+        + str(channels[0])
+        + "-"
+        + str(channels[len(channels) - 1])
+        + "_THR_ENC.dat",
+    ),
+    "w",
+) as filehandle:
+    for i in range(0, len(channels)):
+        print("Parameter: " + str(parameters[i, 0]))
+        filehandle.write("%f %f\n" % (parameters[i, 0], parameters[i, 1]))
+
+# Plot histogram of threshold data
+plt.clf()
+data = parameters[:, 0]
+binwidth = 10
+plot_data = [int(data_i) for data_i in data]
+plt.hist(
+    data,
+    bins=range(min(plot_data), max(plot_data) + binwidth, binwidth),
+    edgecolor="black",
+)
+# Plot the PDF
+xmin, xmax = plt.xlim()
+mu, std = norm.fit(data)
+x = np.linspace(xmin - 15, xmax + 15, 100)
+p = norm.pdf(x, mu, std) * 320
+# plt.plot(x, p, "k", linewidth=2)
+plt.title(
+    "Channel Threshold\n" + str(ENC_THR_folder),
+    fontweight="bold",
+)
+plt.xlabel("Threshold [keV]")
+plt.ylabel("Count")
+plt.savefig(
+    os.path.join(
+        ENC_THR_folder,
+        "ch"
+        + str(channels[0])
+        + "-"
+        + str(channels[len(channels) - 1])
+        + "_thresholds.pdf",
+    )
+)
+
+# Plot ENC derived from charge scan
+plt.clf()
+plt.plot(range(0, 32), parameters[:, 1], marker="o")
+plt.xlabel("Channel")
+plt.ylabel("ENC [keV]")
+plt.title(
+    "ENC from Charge Scan\n" + str(ENC_THR_folder),
+    fontweight="bold",
+)
+plt.savefig(
+    os.path.join(
+        ENC_THR_folder,
+        "ch" + str(channels[0]) + "-" + str(channels[len(channels) - 1]) + "_ENC.pdf",
+    )
+)

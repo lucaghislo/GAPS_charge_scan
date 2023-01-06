@@ -70,7 +70,6 @@ plt.legend(
 )
 plt.grid()
 
-
 output_folder_spec = os.path.join(output_folder, filename)
 if not os.path.exists(output_folder_spec):
     os.mkdir(output_folder_spec)
@@ -172,7 +171,27 @@ plt.savefig(
         + str(channels[0])
         + "-"
         + str(channels[len(channels) - 1])
-        + "_thresholds.pdf",
+        + "_THR_hist.pdf",
+    )
+)
+
+# Plot threshold derived from charge scan
+plt.clf()
+plt.plot(range(0, len(channels)), parameters[:, 0], marker="o")
+plt.xlabel("Channel")
+plt.ylabel("Threshold [keV]")
+plt.title(
+    r"\textbf{Thresholds from charge scan}",
+)
+
+plt.savefig(
+    os.path.join(
+        ENC_THR_folder,
+        "ch"
+        + str(channels[0])
+        + "-"
+        + str(channels[len(channels) - 1])
+        + "_THR_plot.pdf",
     )
 )
 

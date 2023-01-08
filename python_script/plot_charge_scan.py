@@ -108,6 +108,9 @@ output_folder_spec_single = os.path.join(output_folder_spec, "single_channels")
 if not os.path.exists(output_folder_spec_single):
     os.mkdir(output_folder_spec_single)
 
+# Legend font size
+matplotlib.rcParams["legend.fontsize"] = 13
+
 for ch in channels:
     plt.clf()
     ch_data = data[data.iloc[:, 4] == ch]

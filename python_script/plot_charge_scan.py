@@ -155,7 +155,7 @@ with open(
 plt.clf()
 data = parameters[:, 0]
 plot_data = [int(data_i) for data_i in data]
-plt.hist(
+(n, bins, hist) = plt.hist(
     data,
 )
 plt.title(
@@ -163,6 +163,17 @@ plt.title(
 )
 plt.xlabel("Threshold [keV]")
 plt.ylabel("Count")
+
+mu, std = norm.fit(data)
+
+matplotlib.pyplot.text(
+    min(bins),
+    max(n),
+    "$\mu$ = " + str(round(mu, 5)) + " keV\n $\sigma$ = " + str(round(std, 5)) + " keV",
+    fontsize=13,
+    verticalalignment="top",
+    bbox=dict(facecolor="white", edgecolor="#cdcdcd", boxstyle="round,pad=0.35"),
+)
 
 plt.savefig(
     os.path.join(
@@ -184,6 +195,8 @@ plt.title(
     r"\textbf{Thresholds from charge scan}",
 )
 
+plt.grid()
+
 plt.savefig(
     os.path.join(
         ENC_THR_folder,
@@ -203,6 +216,8 @@ plt.ylabel("ENC [keV]")
 plt.title(
     r"\textbf{ENC from Charge Scan}",
 )
+
+plt.grid()
 
 plt.savefig(
     os.path.join(

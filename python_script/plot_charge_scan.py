@@ -27,7 +27,9 @@ matplotlib.rcParams["axes.labelsize"] = 13
 matplotlib.rcParams["xtick.labelsize"] = 13
 matplotlib.rcParams["ytick.labelsize"] = 13
 # Figure size
-matplotlib.rcParams["figure.figsize"] = 6.4 * 1.3, 4.8 * 1.3
+matplotlib.rcParams["figure.figsize"] = 6.4 * 1.5, 4.8 * 1.5
+# Legend font size
+matplotlib.rcParams["legend.fontsize"] = 10
 
 data = pd.read_csv(os.path.join(input_folder, filename + ".dat"), comment="#", sep="\t")
 threshold = data.iloc[0][0]
@@ -46,10 +48,16 @@ for ch in channels:
     events = ch_data.iloc[:, 3]
     inj_range = [inj_i * conv_factor for inj_i in inj_range]
     events = [ev_i / n_events * 100 for ev_i in events]
+    (mu, sigma) = compute_ERF(inj_range, events)
     plt.plot(
         inj_range,
         events,
-        label=str(ch),
+        label=str(ch)
+        + " $\mu$ = "
+        + str(round(mu, 2))
+        + " keV\n $\sigma$ = "
+        + str(round(sigma, 2))
+        + " keV",
         linestyle="--" if ch_count >= len(channels) / 2 and len(channels) > 16 else "-",
     )
     ch_count = ch_count + 1
@@ -101,7 +109,16 @@ for ch in channels:
     events = ch_data.iloc[:, 3]
     inj_range = [inj_i * conv_factor for inj_i in inj_range]
     events = [ev_i / n_events * 100 for ev_i in events]
-    plt.plot(inj_range, events)
+    (mu, sigma) = compute_ERF(inj_range, events)
+    plt.plot(
+        inj_range,
+        events,
+        label="$\mu$ = "
+        + str(round(mu, 5))
+        + " keV\n $\sigma$ = "
+        + str(round(sigma, 5))
+        + " keV",
+    )
     plt.title(
         r"\textbf{Charge scan ch. "
         + str(ch)
@@ -114,14 +131,13 @@ for ch in channels:
     plt.xlabel("Energy [keV]")
     plt.ylabel("Probability [\%]")
     plt.grid()
+    plt.legend(handlelength=0, handletextpad=0)
     plt.savefig(
         os.path.join(
             output_folder_spec_single,
             "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + ".pdf",
         )
     )
-
-    (mu, sigma) = compute_ERF(inj_range, events)
 
     parameters = np.vstack([parameters, [mu, sigma]])
     print("channel " + str(ch) + " -> mu: " + str(mu) + "\tsigma: " + str(sigma))

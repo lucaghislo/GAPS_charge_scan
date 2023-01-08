@@ -13,6 +13,12 @@ filename = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX"
 ch_min = 0
 ch_max = 31
 
+# TODO
+# Request user input
+# filename = input("Charge scan filepath: ")
+# ch_min = int(input("First channel:"))
+# ch_max = int(input(" Last channel:"))
+
 # LaTex interpreter
 plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
 

@@ -9,22 +9,24 @@ from error_function_calculator import compute_ERF
 from erf_function import *
 
 # Configuration
-filename = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX"
+filename = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX.dat"
 ch_min = 0
 ch_max = 31
 
 # TODO
 # Request user input
-# filename = input("Charge scan filepath: ")
-# ch_min = int(input("First channel:"))
-# ch_max = int(input(" Last channel:"))
+filename = input("Charge scan filename in \input folder: ")
+ch_min = int(input("First channel: "))
+ch_max = int(input(" Last channel: "))
+
+print("\nWorking on it, be patient...\n")
 
 # LaTex interpreter
 plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
 
 # Folders
-input_folder = "python_script\input"
-output_folder = "python_script\output"
+input_folder = "input"
+output_folder = "output"
 
 # PLOT CONFIGURATION
 # Label size
@@ -37,13 +39,14 @@ matplotlib.rcParams["figure.figsize"] = 6.4 * 1.5, 4.8 * 1.5
 # Legend font size
 matplotlib.rcParams["legend.fontsize"] = 10
 
-data = pd.read_csv(os.path.join(input_folder, filename + ".dat"), comment="#", sep="\t")
+data = pd.read_csv(os.path.join(input_folder, filename), comment="#", sep="\t")
 threshold = data.iloc[0][0]
 n_events = data.iloc[0][2]
 conv_factor = 0.841
 
 channels = range(ch_min, ch_max + 1)
 dac_range = np.unique(data.iloc[:, 1])
+filename = filename.replace(".dat", "")
 
 # All channels in the same plot
 plt.clf()
@@ -59,9 +62,9 @@ for ch in channels:
         inj_range,
         events,
         label=str(ch)
-        + " $\mu$ = "
+        + " THR: "
         + str(round(mu, 2))
-        + " keV\n $\sigma$ = "
+        + " keV\n ENC: "
         + str(round(sigma, 2))
         + " keV",
         linestyle="--" if ch_count >= len(channels) / 2 and len(channels) > 16 else "-",
@@ -122,9 +125,9 @@ for ch in channels:
     plt.plot(
         inj_range,
         events,
-        label="$\mu$ = "
+        label="THR: "
         + str(round(mu, 5))
-        + " keV\n $\sigma$ = "
+        + " keV\n ENC: "
         + str(round(sigma, 5))
         + " keV",
     )
@@ -171,7 +174,6 @@ with open(
     "w",
 ) as filehandle:
     for i in range(0, len(channels)):
-        print("Parameter: " + str(parameters[i, 0]))
         filehandle.write(
             "%d\t%f\t\t%f\n" % (channels[i], parameters[i, 0], parameters[i, 1])
         )
@@ -194,7 +196,7 @@ mu, std = norm.fit(data)
 matplotlib.pyplot.text(
     min(bins),
     max(n),
-    "$\mu$ = " + str(round(mu, 5)) + " keV\n $\sigma$ = " + str(round(std, 5)) + " keV",
+    "THR: " + str(round(mu, 5)) + " keV\n ENC: " + str(round(std, 5)) + " keV",
     fontsize=13,
     verticalalignment="top",
     bbox=dict(facecolor="white", edgecolor="#cdcdcd", boxstyle="round,pad=0.35"),

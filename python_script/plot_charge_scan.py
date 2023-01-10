@@ -74,6 +74,7 @@ for ch in channels:
 plt.title(
     r"\textbf{Charge scan (THR: " + str(threshold) + ", " + str(n_events) + " events)}"
 )
+plt.ylim((-5, 105))
 plt.xlabel("Energy [keV]")
 plt.ylabel("Probability [\%]")
 num_columns = 1
@@ -91,16 +92,17 @@ output_folder_spec = os.path.join(output_folder, filename)
 if not os.path.exists(output_folder_spec):
     os.mkdir(output_folder_spec)
 
-allch_filename = os.path.join(
-    output_folder_spec,
-    "charge_scan_ch"
-    + str(ch_min)
-    + "-"
-    + str(ch_max)
-    + "_THR"
-    + str(threshold)
-    + ".pdf",
-)
+# allch_filename = os.path.join(
+    # output_folder_spec,
+    # "charge_scan_ch"
+    # + str(ch_min)
+    # + "-"
+    # + str(ch_max)
+    # + "_THR"
+    # + str(threshold)
+    # + ".pdf",
+# )
+allch_filename = os.path.join(output_folder_spec, filename.replace(".dat", "") + ".pdf")
 plt.savefig(allch_filename)
 print("Saved: " + allch_filename + "\n")
 
@@ -143,6 +145,7 @@ for ch in channels:
     plt.xlabel("Energy [keV]")
     plt.ylabel("Probability [\%]")
     plt.grid()
+    plt.ylim((-5, 105))
     plt.legend(handlelength=0, handletextpad=0)
     plt.savefig(
         os.path.join(
@@ -196,7 +199,7 @@ mu, std = norm.fit(data)
 matplotlib.pyplot.text(
     min(bins),
     max(n),
-    "THR: " + str(round(mu, 5)) + " keV\n ENC: " + str(round(std, 5)) + " keV",
+    "$\mu$ = " + str(round(mu, 5)) + " keV\n $\sigma$ = " + str(round(std, 5)) + " keV",
     fontsize=13,
     verticalalignment="top",
     bbox=dict(facecolor="white", edgecolor="#cdcdcd", boxstyle="round,pad=0.35"),

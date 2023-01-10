@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 from plot_config import *
-from error_function_calculator import compute_ERF
+from error_function_calculator import compute_ERF, compute_ERF_thrscan
 from erf_function import *
 
 # Configuration
@@ -290,15 +290,7 @@ else:
         dac_range = ch_data.iloc[:, 0].to_numpy()
         events = ch_data.iloc[:, 3]
         events = [ev_i / n_events * 100 for ev_i in events]
-
-        (mu, sigma) = compute_ERF(dac_range, events)
-
-        print("DAC range")
-        print(dac_range)
-
-        print("\nEvents")
-        print(events)
-
+        (mu, sigma) = compute_ERF_thrscan(dac_range, events)
         plt.plot(
             dac_range,
             events,
@@ -312,6 +304,7 @@ else:
             if ch_count >= len(channels) / 2 and len(channels) > 16
             else "-",
         )
+
         ch_count = ch_count + 1
 
     plt.title(r"\textbf{Threshold Scan (" + str(n_events) + " events)}")
@@ -339,16 +332,6 @@ else:
     plt.savefig(allch_filename)
     print("Saved: " + allch_filename + "\n")
 
-    # Print sigmoide
-    plt.clf()
-    plt.plot(dac_range, events, marker="o")
-    plt.plot(dac_range, erf_function(dac_range, mu, sigma))
-    plt.show()
-    print(erf_function(dac_range, mu, sigma))
-
-    print(len(dac_range))
-    print(len(events))
-
     parameters = np.zeros([1, 2])
 
     # Save single channels
@@ -365,7 +348,7 @@ else:
         dac_range = ch_data.iloc[:, 0].to_numpy()
         events = ch_data.iloc[:, 3]
         events = [ev_i / n_events * 100 for ev_i in events]
-        (mu, sigma) = compute_ERF(dac_range, events)
+        (mu, sigma) = compute_ERF_thrscan(dac_range, events)
         plt.plot(
             dac_range,
             events,
@@ -390,7 +373,7 @@ else:
         plt.savefig(
             os.path.join(
                 output_folder_spec_single,
-                "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + ".pdf",
+                "charge_scan_ch" + str(ch) + ".pdf",
             )
         )
 

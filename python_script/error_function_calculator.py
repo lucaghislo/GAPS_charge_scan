@@ -24,3 +24,32 @@ def compute_ERF(x, ch_data):
     sigma = popt[1] * 2.35
 
     return mu, sigma
+
+
+def compute_ERF_thrscan(dac_range, events):
+    dac_range_lim = []
+    events_lim = []
+    max_counter = 0
+    reached = True
+    for i in range(0, len(dac_range)):
+
+        if not reached and events[i] == 0:
+            dac_range_lim = []
+            events_lim = []
+
+        if events[i] > 0 and max_counter < 1:
+            if events[i] == 100:
+                max_counter = max_counter + 1
+
+            if reached:
+                events_lim.append(0)
+                dac_range_lim.append(dac_range[i - 1])
+
+            reached = False
+            dac_range_lim.append(dac_range[i])
+            events_lim.append(events[i])
+
+    mu = np.mean(dac_range_lim)
+    sigma = np.std(dac_range_lim) * 2.35
+
+    return mu, sigma

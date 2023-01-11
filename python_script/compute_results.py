@@ -10,7 +10,7 @@ from erf_function import *
 
 # Configuration
 min_ch = 0
-max_ch = 31
+max_ch = 0  # 31
 pt = 5
 
 fthr_selector = ["noFTHR", "FTHR"]
@@ -32,18 +32,20 @@ thr_list = [
     219,
     220,
     221,
-    # 222,
-    # 223,
-    # 224,
-    # 225,
+    222,
+    223,
+    224,
+    225,
 ]
 input_folder = "python_script\output"
+channels = range(min_ch, max_ch + 1)
 
 # Read data
 # Fine thresholds
 FTHR_thresholds = []
 for thr in thr_list:
-    filepath_root = os.path.join(
+    # Get THR and ENC data
+    filepath_root_thr = os.path.join(
         input_folder,
         "FTHR_THR_"
         + str(thr)
@@ -54,16 +56,22 @@ for thr in thr_list:
         + "-"
         + str(max_ch),
     )
-    filepath_subfolder = os.path.join(filepath_root, "ENC_THR")
-    filepath = os.path.join(
-        filepath_subfolder, "ch" + str(min_ch) + "-" + str(max_ch) + "_THR_ENC.dat"
+    filepath_subfolder_thr = os.path.join(filepath_root_thr, "ENC_THR")
+    filepath_thr = os.path.join(
+        filepath_subfolder_thr, "ch" + str(min_ch) + "-" + str(max_ch) + "_THR_ENC.dat"
     )
-    data_raw = pd.read_csv(filepath, sep="\t", header=None)
-    data_raw = data_raw.iloc[:, [1, 3]]
+    data_thr_enc_raw = pd.read_csv(filepath_thr, sep="\t", header=None)
+    data_thr_enc_raw = data_thr_enc_raw.iloc[:, [1, 3]]
 
     # Channel threshold and ENC
-    allch_thr = data_raw.iloc[:, 0]
-    allch_enc = data_raw.iloc[:, 1]
+    allch_thr = data_thr_enc_raw.iloc[:, 0]
+    allch_enc = data_thr_enc_raw.iloc[:, 1]
+
+    # keV -> DAC_inj code
+    allch_thr = [i / 0.841 for i in allch_thr]
+    allch_enc = [i / 0.841 for i in allch_enc]
+
+    print(allch_thr)
 
     # print(thr)
     print(len(allch_thr[allch_thr - allch_enc > 0]))
@@ -75,6 +83,32 @@ for thr in thr_list:
 
     FTHR_thresholds.append(thr_mean)
 
+    # Get channel dac_inj and events
+    filepath_root_ch_0 = os.path.join(
+        input_folder,
+        "FTHR_THR_"
+        + str(thr)
+        + "_pt"
+        + str(pt)
+        + "_ch_"
+        + str(min_ch)
+        + "-"
+        + str(max_ch),
+    )
+    filepath_root_ch = os.path.join(filepath_root_ch_0, "single_channels")
+    filepath_subfolder_ch = os.path.join(filepath_root_ch, "data")
+
+    plt.clf()
+    for ch in channels:
+        # Get ch data for threshold thr
+        filepath_ch = os.path.join(
+            filepath_subfolder_ch, "ch_" + str(ch) + "_THR_" + str(thr) + ".dat"
+        )
+        data_ch_raw = pd.read_csv(filepath_ch, sep="\t", header=None)
+        dac_inj = data_ch_raw.iloc[:, 0]
+        events = data_ch_raw.iloc[:, 1]
+        plt.plot(dac_inj, events)
+    # plt.show()
 
 plt.clf()
 plt.plot(thr_list, FTHR_thresholds)

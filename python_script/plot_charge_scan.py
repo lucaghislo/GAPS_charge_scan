@@ -19,8 +19,6 @@ while True:
     ch_min = int(input("First channel: "))
     ch_max = int(input(" Last channel: "))
 
-    print("\nWorking on it, be patient...\n")
-
     # LaTex interpreter
     plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
 
@@ -62,7 +60,8 @@ while True:
 
     if charge_scan_flag:
         # CHARGE SCAN
-        print("CHARGE SCAN\n")
+        print("\nCHARGE SCAN\n")
+        print("Working on it, be patient...\n")
         # All channels in the same plot
         threshold = data.iloc[0][0]
         n_events = data.iloc[0][2]
@@ -128,6 +127,16 @@ while True:
         if not os.path.exists(output_folder_spec_single):
             os.mkdir(output_folder_spec_single)
 
+        output_folder_spec_single_plot = os.path.join(
+            output_folder_spec_single, "plots"
+        )
+        if not os.path.exists(output_folder_spec_single_plot):
+            os.mkdir(output_folder_spec_single_plot)
+
+        output_folder_spec_single_data = os.path.join(output_folder_spec_single, "data")
+        if not os.path.exists(output_folder_spec_single_data):
+            os.mkdir(output_folder_spec_single_data)
+
         # Legend font size
         matplotlib.rcParams["legend.fontsize"] = 13
 
@@ -164,16 +173,25 @@ while True:
             plt.legend(handlelength=0, handletextpad=0)
             plt.savefig(
                 os.path.join(
-                    output_folder_spec_single,
+                    output_folder_spec_single_plot,
                     "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + ".pdf",
                 )
             )
 
             parameters = np.vstack([parameters, [mu, sigma]])
-            print(
-                "channel " + str(ch) + " -> mu: " + str(mu) + "\tsigma: " + str(sigma)
-            )
-            print("Saved ch. " + str(ch))
+            print("* Channel " + str(ch) + " *")
+            print("   mu: " + str(mu) + " keV\nsigma: " + str(sigma) + " keV\n")
+
+            # Save data for given channel
+            with open(
+                os.path.join(
+                    output_folder_spec_single_data,
+                    "ch_" + str(ch) + "_THR_" + str(threshold) + ".dat",
+                ),
+                "w",
+            ) as filehandle:
+                for i in range(0, len(inj_range)):
+                    filehandle.write("   %f\t%f\n" % (inj_range[i], events[i]))
 
         parameters = parameters[1:, :]
         ENC_THR_folder = os.path.join(output_folder_spec, "ENC_THR")
@@ -285,7 +303,8 @@ while True:
 
     else:
         # THRESHOLD SCAN
-        print("THRESHOLD SCAN\n")
+        print("\THRESHOLD SCAN\n")
+        print("Working on it, be patient...\n")
         # All channels in the same plot
         data = data_bkp
         plt.clf()
@@ -382,10 +401,14 @@ while True:
             )
 
             parameters = np.vstack([parameters, [mu, sigma]])
+            print("* Channel " + str(ch) + " *")
             print(
-                "channel " + str(ch) + " -> mu: " + str(mu) + "\tsigma: " + str(sigma)
+                "   mu: "
+                + str(mu)
+                + " DAC_inj code\nsigma: "
+                + str(sigma)
+                + " DAC_inj code\n"
             )
-            print("Saved ch. " + str(ch))
 
         parameters = parameters[1:, :]
         ENC_THR_folder = os.path.join(output_folder_spec, "ENC_THR")

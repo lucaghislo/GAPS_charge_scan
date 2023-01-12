@@ -9,12 +9,16 @@ from plot_config import *
 from error_function_calculator import compute_ERF, compute_ERF_thrscan
 from erf_function import *
 
+
+def linear_model(x, m, q):
+    return m * x + q
+
+
 # Configuration
 min_ch = 0
 max_ch = 31
 pt = 5
 
-fthr_selector = ["noFTHR", "FTHR"]
 thr_list = [
     205,
     206,
@@ -50,7 +54,7 @@ for thr in thr_list:
     # Get THR and ENC data
     filepath_root_thr = os.path.join(
         input_folder,
-        "FTHR_THR_"
+        "noFTHR_THR_"
         + str(thr)
         + "_pt"
         + str(pt)
@@ -75,21 +79,8 @@ for thr in thr_list:
 
     thr_index = thr_index + 1
 
-    # print(allch_thr)
-
-    # print(thr)
-    print(len(allch_thr[allch_thr > 0]))
-    # print(max(allch_thr))
-    # print("")
-
-    # keV -> DAC_inj code
-    # allch_thr = [i / 0.841 for i in allch_thr]
-    # allch_enc = [i / 0.841 for i in allch_enc]
-
     thr_mean = np.mean(allch_thr[allch_thr > 0])
     thr_sigma = np.std(allch_thr[allch_thr > 0])
-
-    print(thr_mean)
 
     FTHR_thresholds.append(thr_mean)
 
@@ -127,34 +118,49 @@ plt.clf()
 plt.plot(y, x)
 plt.show()
 
+# Acquire thr scan data for given channel
+thr_scan_data = pd.read_csv(
+    r"python_script\output\thrscan_150-255_FTHR_pt5_ch_0-31\ENC_THR\ch0-31_THR_ENC.dat",
+    sep="\t",
+    header=None,
+)
 
-def linear_model(x, m, q):
-    return m * x + q
+thr_scan_values_allch = thr_scan_data.iloc[:, 1]
+thr_scan_values_allch = thr_scan_values_allch.to_numpy()
 
+paras_inj_allch = []
 
-popt, pcov = curve_fit(linear_model, x, y)
-
-plt.clf()
-print(popt)
-print("\nDATIIIIIIIIIII\n")
-
-y = thr_list
+print("** Single channel analysis **")
 for ch in channels:
     ch_data = allch_thr_full[ch, :]
     ch_data = [i / 0.841 for i in ch_data]
-    # popt, pcov = curve_fit(
-    #     linear_model, y[0 : len(y) - 6], ch_data[0 : len(ch_data) - 6]
-    # )
     popt, pcov = curve_fit(
-        linear_model, y[0 : len(y) - 6], ch_data[0 : len(ch_data) - 6]
+        linear_model, ch_data[0 : len(ch_data) - 6], thr_list[0 : len(thr_list) - 6]
     )
 
-    # plt.plot(y[0 : len(y) - 6], ch_data[0 : len(ch_data) - 6])
-    plt.plot(y[0 : len(y) - 6], ch_data[0 : len(ch_data) - 6])
-    plt.plot(
-        y[0 : len(y)],
-        linear_model(y[0 : len(y)], popt[0], popt[1]),
-    )
-    print(str(ch) + ": " + str(abs(popt[0])) + "\t" + str(abs(popt[1])))
-    print(pcov)
-    plt.show()
+    m = popt[0]
+    q = popt[1]
+
+    plt.plot(ch_data[0 : len(ch_data) - 6], thr_list[0 : len(thr_list) - 6])
+
+    # Reconstruct linear model
+    reconstructed_lin = []
+    for i in range(0, len(ch_data)):
+        x = ch_data[i]
+        val = linear_model(x, m, q)
+        reconstructed_lin.append(val)
+
+    plt.plot(ch_data, reconstructed_lin)
+    # plt.plot(thr_list, [0] * len(y))
+    plt.plot([0] * len(range(200, 255)), range(200, 255))
+
+    paras_inj_allch.append(abs(q - thr_scan_values_allch[ch]))
+
+    print(str(ch) + ": " + str(m) + "\t" + str(q) + "\t" + str(paras_inj_allch[ch]))
+    # plt.show()
+
+plt.clf()
+plt.plot(range(0, 32), paras_inj_allch)
+plt.xlabel("Channel")
+plt.ylabel("Parasitic injection [DAC\_thr code]")
+plt.show()

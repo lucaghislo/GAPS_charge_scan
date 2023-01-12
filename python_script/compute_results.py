@@ -24,23 +24,23 @@ thr_list = [
     206,
     207,
     208,
-    209,
-    210,
-    211,
-    212,
-    213,
-    214,
-    215,
-    216,
-    217,
-    218,
-    219,
-    220,
-    221,
-    222,
-    223,
-    224,
-    225,
+    # 209,
+    # 210,
+    # 211,
+    # 212,
+    # 213,
+    # 214,
+    # 215,
+    # 216,
+    # 217,
+    # 218,
+    # 219,
+    # 220,
+    # 221,
+    # 222,
+    # 223,
+    # 224,
+    # 225,
 ]
 input_folder = "python_script\output"
 channels = range(min_ch, max_ch + 1)
@@ -111,8 +111,8 @@ for thr in thr_list:
         plt.plot(dac_inj, events)
     # plt.show()
 
-x = FTHR_thresholds[0 : len(FTHR_thresholds) - 6]  # keV
-y = thr_list[0 : len(thr_list) - 6]  # DAC_thr code
+x = FTHR_thresholds[0 : len(FTHR_thresholds)]  # keV
+y = thr_list[0 : len(thr_list)]  # DAC_thr code
 
 plt.clf()
 plt.plot(y, x)
@@ -135,13 +135,13 @@ for ch in channels:
     ch_data = allch_thr_full[ch, :]
     ch_data = [i / 0.841 for i in ch_data]
     popt, pcov = curve_fit(
-        linear_model, ch_data[0 : len(ch_data) - 6], thr_list[0 : len(thr_list) - 6]
+        linear_model, ch_data[0 : len(ch_data)], thr_list[0 : len(thr_list)]
     )
 
     m = popt[0]
     q = popt[1]
 
-    plt.plot(ch_data[0 : len(ch_data) - 6], thr_list[0 : len(thr_list) - 6])
+    plt.plot(ch_data[0 : len(ch_data)], thr_list[0 : len(thr_list)])
 
     # Reconstruct linear model
     reconstructed_lin = []
@@ -160,7 +160,10 @@ for ch in channels:
     # plt.show()
 
 plt.clf()
-plt.plot(range(0, 32), paras_inj_allch)
+plt.plot(range(0, 32), paras_inj_allch, marker="o")
 plt.xlabel("Channel")
 plt.ylabel("Parasitic injection [DAC\_thr code]")
-plt.show()
+plt.title(r"\textbf{Estimated parasitic injection (no FTHR)}")
+plt.savefig(
+    r"python_script\output\parasitic_injection_estimation\parasitic_inj_noFTHR.pdf"
+)

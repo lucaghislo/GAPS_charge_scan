@@ -54,7 +54,7 @@ for thr in thr_list:
     # Get THR and ENC data
     filepath_root_thr = os.path.join(
         input_folder,
-        "noFTHR_THR_"
+        "FTHR_THR_"
         + str(thr)
         + "_pt"
         + str(pt)
@@ -116,7 +116,7 @@ y = thr_list[0 : len(thr_list)]  # DAC_thr code
 
 plt.clf()
 plt.plot(y, x)
-plt.show()
+# plt.show()
 
 # Acquire thr scan data for given channel
 thr_scan_data = pd.read_csv(
@@ -127,6 +127,37 @@ thr_scan_data = pd.read_csv(
 
 thr_scan_values_allch = thr_scan_data.iloc[:, 1]
 thr_scan_values_allch = thr_scan_values_allch.to_numpy()
+
+# Acquire pedestal data from automated test
+pedestal_auto_raw = pd.read_csv(
+    r"python_script\output\parasitic_injection_estimation\allch_pedestal_data.dat",
+    sep="\t",
+    header=None,
+)
+
+pedestal_auto = pedestal_auto_raw.iloc[:, 1]
+pedestal_auto = pedestal_auto.to_numpy()
+
+# Acquire estimated pedestal and gain from transfer function interpolation
+pedestal_gain_fdt_raw = pd.read_csv(
+    r"python_script\output\parasitic_injection_estimation\allchs_pt5_low_energy_gain_200_realfdt.dat",
+    sep="\t",
+    header=None,
+)
+
+gain_fdt = pedestal_gain_fdt_raw.iloc[:, 1]
+gain_fdt = gain_fdt.to_numpy()
+pedestal_fdt = pedestal_gain_fdt_raw.iloc[:, 2]
+pedestal_fdt = pedestal_fdt.to_numpy()
+
+estimated_coeff_filepath = (
+    r"python_script\output\parasitic_injection_estimation\paras_inj_coeff_FTHR.dat"
+)
+
+est_coeff_handle = open(estimated_coeff_filepath, "w")
+est_coeff_handle.write("ch\tmpar\tqpar\tqthr\tped\tpedinj\tchgain\n")
+est_coeff_handle.close()
+est_coeff_handle = open(estimated_coeff_filepath, "a")
 
 paras_inj_allch = []
 
@@ -156,14 +187,138 @@ for ch in channels:
 
     paras_inj_allch.append(abs(q - thr_scan_values_allch[ch]))
 
-    print(str(ch) + ": " + str(m) + "\t" + str(q) + "\t" + str(paras_inj_allch[ch]))
+    # print(
+    #     str(ch)
+    #     + ": "
+    #     + str(m)
+    #     + "\t"
+    #     + str(q)
+    #     + "\t"
+    #     + str(paras_inj_allch[ch])
+    #     + "\t"
+    #     + str(pedestal_auto[ch])
+    #     + "\t"
+    #     + str()
+    # )
     # plt.show()
+
+    # Save data for given channel
+    est_coeff_handle.write(
+        str(ch)
+        + "\t"
+        + str(m)
+        + "\t"
+        + str(q)
+        + "\t"
+        + str(thr_scan_values_allch[ch])
+        + "\t"
+        + str(pedestal_auto[ch])
+        + "\t"
+        + str(pedestal_fdt[ch])
+        + "\t"
+        + str(gain_fdt[ch])
+        + "\n"
+    )
+
+est_coeff_handle.close()
+
+# Read coefficient file and compute parasitic injection comparison
+data = pd.read_csv(
+    r"python_script\output\parasitic_injection_estimation\paras_inj_coeff_FTHR.dat",
+    sep="\t",
+)
+
+print(data)
+
+channels = range(0, 32)
+mpar = data["mpar"]
+qpar = data["qpar"]
+qthr = data["qthr"]
+ped = data["ped"]
+pedinj = data["pedinj"]
+chgain = data["chgain"]
 
 plt.clf()
 plt.plot(range(0, 32), paras_inj_allch, marker="o")
+plt.plot(range(0, 32), mpar * 40 + 8, marker="*")
 plt.xlabel("Channel")
 plt.ylabel("Parasitic injection [DAC\_thr code]")
-plt.title(r"\textbf{Estimated parasitic injection (no FTHR)}")
+plt.title(r"\textbf{Estimated parasitic injection (FTHR)}")
+
+# Save plot to file
 plt.savefig(
-    r"python_script\output\parasitic_injection_estimation\parasitic_inj_noFTHR.pdf"
+    r"python_script\output\parasitic_injection_estimation\parasitic_inj_FTHR.pdf"
+)
+
+
+# Parasitic injection estimate from charge + thr scan
+par_inj_dacthr = [qthr[i] - qpar[i] for i in channels]
+print(par_inj_dacthr)
+print("")
+
+parasitic_inj_pedestal = []
+parasitic_inj_method = []
+
+# Convert parasitic injection in DAC_inj
+for ch in channels:
+    # Iniezione parassita da differenza di piedistallo
+    inj_pedestal = abs(ped[ch] - pedinj[ch]) * 0.841
+
+    # Iniezione parassita
+    par_inj_dacthr_ch = par_inj_dacthr[ch]  # [DAC_thr]
+
+    # Thr da threshold scan
+    qthr_ch = qthr[ch]  # [DAC_thr]
+
+    # Parametri modello DAC_thr su Y e DAC_inj su X
+    mpar_ch = mpar[ch]  # [DAC_thr/DAC_inj]
+    qpar_ch = qpar[ch]  # [DAC_thr]
+
+    # Parametri modello DAC_inj su Y e DAC_thr su X
+    mpar1_ch = 1 / mpar_ch  # [DAC_inj/DAC_thr]
+    qpar1_ch = qpar_ch / abs(mpar_ch)  # [DAC_inj]
+
+    # Ordinata all'origine ottenuta da threshold scan
+    qpar2_ch = qthr_ch / abs(mpar_ch)
+
+    # print(str(mpar1_ch) + "\t" + str(qpar1_ch))
+
+    inj_dacinj_temp = linear_model(par_inj_dacthr_ch, mpar1_ch, qpar1_ch)
+
+    # Iniezione parassita
+    inj_dacinj = abs(inj_dacinj_temp - qpar2_ch)  # [DAC_inj]
+
+    # Inieizione parassita
+    inj_kev = inj_dacinj * 0.841  # [keV]
+
+    # Iniezione parassita OK
+    inj_kev_ok = par_inj_dacthr_ch * abs(mpar1_ch) * 0.841  # [keV]
+
+    parasitic_inj_pedestal.append(inj_pedestal)
+    parasitic_inj_method.append(inj_kev_ok)
+
+    print(
+        str(ch)
+        # + "\t"
+        # + str(inj_kev)
+        + "\t"
+        + str(inj_pedestal)
+        + "\t"
+        + str(inj_kev_ok)
+        + "\t"
+        + str(inj_pedestal - inj_kev_ok)
+    )
+
+    # print(str(ch) + "\t" + str(par_inj_dacthr_ch * abs(mpar1_ch)))
+
+plt.clf()
+plt.plot(range(0, 32), parasitic_inj_pedestal, marker="o", label="From pedestal")
+plt.plot(range(0, 32), parasitic_inj_method, marker="*", label="From charge/thr scan")
+plt.title(r"\textbf{Parasitic injection estimate}")
+plt.ylabel("Parasitic injection [keV]")
+plt.xlabel("Channel")
+plt.legend()
+plt.grid()
+plt.savefig(
+    r"python_script\output\parasitic_injection_estimation\parasitic_inj_FTHR_comparison.pdf"
 )

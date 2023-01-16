@@ -20,14 +20,14 @@ max_ch = 31
 pt = 5
 
 thr_list = [
-    185,
-    190,
-    195,
-    200,
-    # 205,
-    # 206,
-    # 207,
-    # 208,
+    # 185,
+    # 190,
+    # 195,
+    # 200,
+    205,
+    206,
+    207,
+    208,
     # 209,
     # 210,
     # 211,
@@ -244,7 +244,7 @@ chgain = data["chgain"]
 
 plt.clf()
 plt.plot(range(0, 32), paras_inj_allch, marker="o")
-plt.plot(range(0, 32), mpar * 40 + 8, marker="*")
+# plt.plot(range(0, 32), mpar * 40 + 8, marker="*")
 plt.xlabel("Channel")
 plt.ylabel("Parasitic injection [DAC\_thr code]")
 plt.title(r"\textbf{Estimated parasitic injection (FTHR)}")

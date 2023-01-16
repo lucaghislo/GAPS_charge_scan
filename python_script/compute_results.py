@@ -259,6 +259,14 @@ print("")
 parasitic_inj_pedestal = []
 parasitic_inj_method = []
 
+# Save parasitic injection estimate on file
+par_inj_filepath = r"python_script\input\par_inj_estimate.dat"
+par_inj_handle = open(par_inj_filepath, "w")
+par_inj_handle = open(par_inj_filepath, "w")
+par_inj_handle.write("ch\tinj_ped\tinj_chrthr\n")
+par_inj_handle.close()
+par_inj_handle = open(par_inj_filepath, "a")
+
 # Convert parasitic injection in DAC_inj
 for ch in channels:
     # Iniezione parassita da differenza di piedistallo
@@ -309,7 +317,14 @@ for ch in channels:
         + str(inj_pedestal - inj_kev_ok)
     )
 
+    # Save estimate to file
+    par_inj_handle.write(
+        str(ch) + "\t" + str(inj_pedestal) + "\t" + str(inj_kev_ok) + "\n"
+    )
+
     # print(str(ch) + "\t" + str(par_inj_dacthr_ch * abs(mpar1_ch)))
+
+par_inj_handle.close()
 
 plt.clf()
 plt.plot(

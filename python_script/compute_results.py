@@ -312,12 +312,30 @@ for ch in channels:
     # print(str(ch) + "\t" + str(par_inj_dacthr_ch * abs(mpar1_ch)))
 
 plt.clf()
-plt.plot(range(0, 32), parasitic_inj_pedestal, marker="o", label="From pedestal")
-plt.plot(range(0, 32), parasitic_inj_method, marker="*", label="From charge/thr scan")
+plt.plot(
+    range(0, 32),
+    parasitic_inj_pedestal,
+    marker="o",
+    label=r"From pedestal $\mu="
+    + str(round(np.mean(parasitic_inj_pedestal), 2))
+    + r"$ keV, $\sigma = "
+    + str(round(np.std(parasitic_inj_pedestal), 2))
+    + r"$ keV",
+)
+plt.plot(
+    range(0, 32),
+    parasitic_inj_method,
+    marker="*",
+    label=r"From charge/thr scan $\mu="
+    + str(round(np.mean(parasitic_inj_method), 2))
+    + r"$ keV, $\sigma = "
+    + str(round(np.std(parasitic_inj_method), 2))
+    + r"$ keV",
+)
 plt.title(r"\textbf{Parasitic injection estimate}")
 plt.ylabel("Parasitic injection [keV]")
 plt.xlabel("Channel")
-plt.legend()
+plt.legend(loc="lower left")
 plt.grid()
 plt.savefig(
     r"python_script\output\parasitic_injection_estimation\parasitic_inj_FTHR_comparison.pdf"

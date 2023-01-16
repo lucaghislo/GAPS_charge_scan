@@ -20,11 +20,14 @@ max_ch = 31
 pt = 5
 
 thr_list = [
+    185,
+    190,
+    195,
     200,
-    205,
-    206,
-    207,
-    208,
+    # 205,
+    # 206,
+    # 207,
+    # 208,
     # 209,
     # 210,
     # 211,
@@ -110,7 +113,7 @@ for thr in thr_list:
         dac_inj = data_ch_raw.iloc[:, 0]
         events = data_ch_raw.iloc[:, 1]
         plt.plot(dac_inj, events)
-    # plt.show()
+    plt.show()
 
 x = FTHR_thresholds[0 : len(FTHR_thresholds)]  # keV
 y = thr_list[0 : len(thr_list)]  # DAC_thr code

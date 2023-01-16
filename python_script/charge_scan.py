@@ -13,7 +13,6 @@ def charge_scan(data, channels, conv_factor, output_folder, filename):
     # CHARGE SCAN
     print("\nCHARGE SCAN\n")
     print("Working on it, be patient...\n")
-    print("Charge scan without estimated parasitic injection\n")
 
     # All channels in the same plot
     threshold = data.iloc[0][0]

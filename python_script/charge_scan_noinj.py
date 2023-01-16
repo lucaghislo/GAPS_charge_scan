@@ -9,7 +9,7 @@ from error_function_calculator import compute_ERF, compute_ERF_thrscan
 from erf_function import *
 
 
-def charge_scan_noinj(data, channels, conv_factor, output_folder, filename):
+def charge_scan_noinj(data, channels, conv_factor, output_folder, filename, xmin, xmax):
     # PLOT CONFIGURATION
     # Label size
     matplotlib.rcParams["axes.labelsize"] = 13
@@ -66,6 +66,7 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, filename):
     plt.ylim((-5, 105))
     plt.xlabel("Energy [keV]")
     plt.ylabel("Probability [\%]")
+    plt.xlim(xmin, xmax)
     num_columns = 1
     if len(channels) > 16:
         num_columns = 2

@@ -62,6 +62,8 @@ def charge_scan(data, channels, conv_factor, output_folder, filename):
         ncol=num_columns,
     )
     plt.grid()
+    axes = plt.gca()
+    xmin, xmax = axes.get_xlim()
 
     output_folder_spec = os.path.join(output_folder, filename)
     if not os.path.exists(output_folder_spec):
@@ -250,3 +252,5 @@ def charge_scan(data, channels, conv_factor, output_folder, filename):
             + "_ENC.pdf",
         )
     )
+
+    return xmin, xmax

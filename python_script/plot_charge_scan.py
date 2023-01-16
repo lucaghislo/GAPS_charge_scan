@@ -63,10 +63,12 @@ while True:
 
     if charge_scan_flag:
         # Charge scan
-        charge_scan(data, channels, conv_factor, output_folder, filename)
+        (xmin, xmax) = charge_scan(data, channels, conv_factor, output_folder, filename)
 
         # Charge scan with subtracted parasitic injection
-        charge_scan_noinj(data, channels, conv_factor, output_folder, filename)
+        charge_scan_noinj(
+            data, channels, conv_factor, output_folder, filename, xmin, xmax
+        )
 
     else:
         # Threshold scan

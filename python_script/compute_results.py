@@ -271,7 +271,7 @@ par_inj_handle.write("ch\tinj_ped\tinj_chrthr\n")
 par_inj_handle.close()
 par_inj_handle = open(par_inj_filepath, "a")
 
-# Convert parasitic injection in DAC_inj
+# Convert parasitic injection to DAC_inj
 for ch in channels:
     # Iniezione parassita da differenza di piedistallo
     inj_pedestal = abs(ped[ch] - pedinj[ch]) * 0.841

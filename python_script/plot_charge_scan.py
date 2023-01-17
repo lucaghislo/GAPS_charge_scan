@@ -2,25 +2,26 @@ import os as os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from scipy.stats import norm
 
 from plot_config import *
-from error_function_calculator import compute_ERF, compute_ERF_thrscan
 from erf_function import *
 from charge_scan_noinj import charge_scan_noinj
 from charge_scan import charge_scan
 from threshold_scan import threshold_scan
+from compute_par_inj import get_parasitic_injection
 
-# Configuration
-# filename = "IT_L4R0M0_Gigi_charge_scan_THR_205_FTH_MX.dat"
-# ch_min = 0
-# ch_max = 31
 
 while True:
     # Request user input
-    filename = input("Charge or threshold scan filename in \input folder: ")
-    ch_min = int(input("First channel: "))
-    ch_max = int(input(" Last channel: "))
+    # TODO fix filename_chargescan with generic path
+    filename_chargescan = input("    Charge or threshold scan filepath: ")
+    ch_min = int(input("                        First channel: "))
+    ch_max = int(input("                         Last channel: "))
+    comp_parinj_flag = input("Compensate parasitic injection? (y/n): ")
+
+    # TODO set generic output folder specified from filepath
+    output_folder_filepath = input("               Output folder filepath: ")
+    print("")
 
     # LaTex interpreter
     plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
@@ -42,14 +43,17 @@ while True:
 
     # Read data from file
     data = pd.read_csv(
-        os.path.join(input_folder, filename), comment="#", sep="\t", header=None
+        os.path.join(input_folder, filename_chargescan),
+        comment="#",
+        sep="\t",
+        header=None,
     )
     data_bkp = data
 
     # Configuration
     conv_factor = 0.841
     channels = range(ch_min, ch_max + 1)
-    filename = filename.replace(".dat", "")
+    filename_chargescan = filename_chargescan.replace(".dat", "")
 
     # Determine if charge scan or threshold scan
     n_events = data.iloc[0][2]
@@ -62,14 +66,40 @@ while True:
         charge_scan_flag = False
 
     if charge_scan_flag:
-        # Charge scan
-        (xmin, xmax) = charge_scan(data, channels, conv_factor, output_folder, filename)
+        if comp_parinj_flag == "y":
+            # Get additional info when charge scan is selected and user wants to compensate parasitic injection
+            filename_pedestal = input("         Pedestal from automated test: ")
+            filename_fdt = input("Transfer function from automated test: ")
+            peaking_time = int(input("                Peaking time (0 to 7): "))
 
-        # Charge scan with subtracted parasitic injection
-        charge_scan_noinj(
-            data, channels, conv_factor, output_folder, filename, xmin, xmax
+        # Charge scan without removal of parasitic injection
+        # Always done
+        (xmin, xmax) = charge_scan(
+            data, channels, conv_factor, output_folder, filename_chargescan
         )
+
+        if comp_parinj_flag == "y":
+            # Get parasitic injection estimate to get proper charge scan
+            allch_par_inj_estimate = []
+            for ch in channels:
+                ch_par_inj_estimate = get_parasitic_injection(
+                    filename_pedestal, filename_fdt, ch, peaking_time
+                )
+                allch_par_inj_estimate.append(ch_par_inj_estimate)
+
+            print(allch_par_inj_estimate)
+
+            # Charge scan with subtracted parasitic injection
+            charge_scan_noinj(
+                data,
+                channels,
+                conv_factor,
+                output_folder,
+                filename_chargescan,
+                xmin,
+                xmax,
+            )
 
     else:
         # Threshold scan
-        threshold_scan(data_bkp, channels, n_events, output_folder, filename)
+        threshold_scan(data_bkp, channels, n_events, output_folder, filename_chargescan)

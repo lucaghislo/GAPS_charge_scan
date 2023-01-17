@@ -78,12 +78,17 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, filename, xmin
     )
     plt.grid()
 
-    output_folder_spec = os.path.join(output_folder, filename)
+    output_folder_spec = output_folder
     if not os.path.exists(output_folder_spec):
         os.mkdir(output_folder_spec)
 
     allch_filename = os.path.join(
-        output_folder_spec, filename.replace(".dat", "") + "_inj.pdf"
+        output_folder_spec,
+        "charge_scan_ch"
+        + str(channels[0])
+        + "-"
+        + str(channels[len(channels) - 1])
+        + "_inj.pdf",
     )
     plt.savefig(allch_filename)
     print("Saved: " + allch_filename + "\n")

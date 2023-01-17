@@ -5,12 +5,11 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 from plot_config import *
-from error_function_calculator import compute_ERF, compute_ERF_thrscan
+from error_function_calculator import compute_ERF
 from erf_function import *
 
-
-def charge_scan(data, channels, conv_factor, output_folder, filename):
-    # CHARGE SCAN
+# CHARGE SCAN
+def charge_scan(data, channels, conv_factor, output_folder):
     print("\nCHARGE SCAN\n")
     print("Working on it, be patient...\n")
 
@@ -64,12 +63,17 @@ def charge_scan(data, channels, conv_factor, output_folder, filename):
     axes = plt.gca()
     xmin, xmax = axes.get_xlim()
 
-    output_folder_spec = os.path.join(output_folder, filename)
+    output_folder_spec = output_folder
     if not os.path.exists(output_folder_spec):
         os.mkdir(output_folder_spec)
 
     allch_filename = os.path.join(
-        output_folder_spec, filename.replace(".dat", "") + ".pdf"
+        output_folder_spec,
+        "charge_scan_ch"
+        + str(channels[0])
+        + "-"
+        + str(channels[len(channels) - 1])
+        + ".pdf",
     )
     plt.savefig(allch_filename)
     print("Saved: " + allch_filename + "\n")

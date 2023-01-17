@@ -5,13 +5,15 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 from plot_config import *
-from error_function_calculator import compute_ERF, compute_ERF_thrscan
+from error_function_calculator import compute_ERF_thrscan
 from erf_function import *
 
+# THRESHOLD SCAN
+def threshold_scan(data_bkp, channels, n_events, output_folder):
+    # Legend font size
+    matplotlib.rcParams["legend.fontsize"] = 8.5
 
-def threshold_scan(data_bkp, channels, n_events, output_folder, filename):
-    # THRESHOLD SCAN
-    print("\THRESHOLD SCAN\n")
+    print("\nTHRESHOLD SCAN\n")
     print("Working on it, be patient...\n")
     # All channels in the same plot
     data = data_bkp
@@ -28,9 +30,6 @@ def threshold_scan(data_bkp, channels, n_events, output_folder, filename):
             dac_range,
             events,
             label=str(ch) + " THR: " + str(round(mu, 2)) + " DAC\_thr code",
-            # + "\n ENC: "
-            # + str(round(sigma, 2))
-            # + " DAC\_thr code",
             linestyle="--"
             if ch_count >= len(channels) / 2 and len(channels) > 16
             else "-",
@@ -44,7 +43,7 @@ def threshold_scan(data_bkp, channels, n_events, output_folder, filename):
     plt.ylabel("Probability [\%]")
     num_columns = 1
     if len(channels) > 16:
-        num_columns = 2
+        num_columns = 1
     plt.legend(
         title=r"\textbf{Channel}",
         loc="center left",
@@ -53,12 +52,17 @@ def threshold_scan(data_bkp, channels, n_events, output_folder, filename):
     )
     plt.grid()
 
-    output_folder_spec = os.path.join(output_folder, filename)
+    output_folder_spec = output_folder
     if not os.path.exists(output_folder_spec):
         os.mkdir(output_folder_spec)
 
     allch_filename = os.path.join(
-        output_folder_spec, filename.replace(".dat", "") + ".pdf"
+        output_folder_spec,
+        "threshold_scan_ch"
+        + str(channels[0])
+        + "-"
+        + str(channels[len(channels) - 1])
+        + ".pdf",
     )
     plt.savefig(allch_filename)
     print("Saved: " + allch_filename + "\n")

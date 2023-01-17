@@ -90,13 +90,10 @@ while True:
                 channels,
                 conv_factor,
                 output_folder_filepath,
-                filename_chargescan,
                 xmin,
                 xmax,
             )
 
     else:
         # Threshold scan
-        threshold_scan(
-            data_bkp, channels, n_events, output_folder_filepath, filename_chargescan
-        )
+        threshold_scan(data_bkp, channels, n_events, output_folder_filepath)

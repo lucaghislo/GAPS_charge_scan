@@ -8,8 +8,8 @@ from plot_config import *
 from error_function_calculator import compute_ERF, compute_ERF_thrscan
 from erf_function import *
 
-
-def charge_scan_noinj(data, channels, conv_factor, output_folder, filename, xmin, xmax):
+# CHARGE SCAN WITHOUT PARASITIC INJECTION ESTIMATED FROM PEDESTAL AND FDT INTERPOLATION
+def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     # PLOT CONFIGURATION
     # Label size
     matplotlib.rcParams["axes.labelsize"] = 13
@@ -21,7 +21,6 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, filename, xmin
     # Legend font size
     matplotlib.rcParams["legend.fontsize"] = 10
 
-    # CHARGE SCAN
     print("Charge scan without estimated parasitic injection\n")
     print("Working on it, be patient...\n")
 

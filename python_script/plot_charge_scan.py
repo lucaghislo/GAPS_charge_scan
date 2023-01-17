@@ -84,8 +84,6 @@ while True:
                 )
                 allch_par_inj_estimate.append(ch_par_inj_estimate)
 
-            print(allch_par_inj_estimate)
-
             # Charge scan with subtracted parasitic injection
             charge_scan_noinj(
                 data,

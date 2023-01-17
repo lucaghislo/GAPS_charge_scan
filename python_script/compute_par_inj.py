@@ -25,7 +25,7 @@ def get_parasitic_injection(pedestal_filepath, fdt_filepath, ch, pt):
     pedestal_ch = get_pedestal(read_pedestals(pedestal_filepath), ch, pt)
 
     # Read channel transfer function given peaking time
-    (fdt_cal_v, fdt_ch_out) = get_fdt(read_transfer_function, ch, pt)
+    (fdt_cal_v, fdt_ch_out) = get_fdt(read_transfer_function(fdt_filepath), ch, pt)
 
     # Calculate transfer function linear gain and estimate pedestal
 

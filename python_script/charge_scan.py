@@ -10,7 +10,7 @@ from erf_function import *
 
 # CHARGE SCAN
 def charge_scan(data, channels, conv_factor, output_folder):
-    print("\nCHARGE SCAN\n")
+    print("CHARGE SCAN\n")
     print("Working on it, be patient...\n")
 
     # All channels in the same plot

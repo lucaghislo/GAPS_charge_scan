@@ -68,7 +68,6 @@ while True:
             filename_pedestal = input("         Pedestal from automated test: ")
             filename_fdt = input("Transfer function from automated test: ")
             peaking_time = int(input("                Peaking time (0 to 7): "))
-            print("")
 
         # Charge scan without removal of parasitic injection
         # Always done

@@ -16,14 +16,14 @@ while True:
     # TODO fix filename_chargescan with generic path
     filename_chargescan = input("    Charge or threshold scan filepath: ")
     if filename_chargescan[0] == '"':
-        filename_chargescan.replace('"', "")
+        filename_chargescan = filename_chargescan.replace('"', "")
     ch_min = int(input("                        First channel: "))
     ch_max = int(input("                         Last channel: "))
 
     # TODO set generic output folder specified from filepath
     output_folder_filepath = input("               Output folder filepath: ")
     if output_folder_filepath[0] == '"':
-        output_folder_filepath.replace('"', "")
+        output_folder_filepath = output_folder_filepath.replace('"', "")
 
     # LaTex interpreter
     plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
@@ -71,10 +71,10 @@ while True:
             # Get additional info when charge scan is selected and user wants to compensate parasitic injection
             filename_pedestal = input("         Pedestal from automated test: ")
             if filename_pedestal[0] == '"':
-                filename_pedestal.replace('"', "")
+                filename_pedestal = filename_pedestal.replace('"', "")
             filename_fdt = input("Transfer function from automated test: ")
             if filename_fdt[0] == '"':
-                filename_fdt.replace('"', "")
+                filename_fdt = filename_fdt.replace('"', "")
             peaking_time = int(input("                Peaking time (0 to 7): "))
 
         # Charge scan without removal of parasitic injection

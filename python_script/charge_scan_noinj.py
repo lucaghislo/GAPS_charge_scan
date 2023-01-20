@@ -24,6 +24,8 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     print("Charge scan without estimated parasitic injection\n")
     print("Working on it, be patient...\n")
 
+    excl_channels = np.setdiff1d(range(0, 32), channels)
+
     # Read parasitic injection data and apply correction
     par_inj_raw = pd.read_csv("input\par_inj_estimate.dat", sep="\t")
     par_inj_pedestal = par_inj_raw["inj_ped"]
@@ -60,7 +62,9 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         + str(threshold)
         + ", "
         + str(n_events)
-        + r" events, parasitic injection removed)}"
+        + r" events, parasitic injection removed, excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}"
     )
     plt.ylim((-5, 105))
     plt.xlabel("Energy [keV]")
@@ -135,7 +139,9 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
             + str(threshold)
             + ", "
             + str(n_events)
-            + r" events, parasitic injection removed)}"
+            + r" events, parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
         )
         plt.xlabel("Energy [keV]")
         plt.ylabel("Probability [\%]")
@@ -195,7 +201,9 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         data,
     )
     plt.title(
-        r"\textbf{Thresholds from Charge Scan (parasitic injection removed)}",
+        r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
     plt.xlabel("Threshold [keV]")
     plt.ylabel("Count")
@@ -232,7 +240,9 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     plt.xlabel("Channel")
     plt.ylabel("Threshold [keV]")
     plt.title(
-        r"\textbf{Thresholds from Charge Scan (parasitic injection removed)}",
+        r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
 
     plt.grid()
@@ -254,7 +264,9 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     plt.xlabel("Channel")
     plt.ylabel("ENC [keV]")
     plt.title(
-        r"\textbf{ENC from Charge Scan (parasitic injection removed)}",
+        r"\textbf{ENC from Charge Scan (parasitic injection removed, excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
 
     plt.grid()

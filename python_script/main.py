@@ -13,14 +13,19 @@ from compute_par_inj import get_parasitic_injection
 
 while True:
     # Request user input
-    # TODO fix filename_chargescan with generic path
     filename_chargescan = input("    Charge or threshold scan filepath: ")
     if filename_chargescan[0] == '"':
         filename_chargescan = filename_chargescan.replace('"', "")
     ch_min = int(input("                        First channel: "))
     ch_max = int(input("                         Last channel: "))
+    excl_channels = input("  Excluded channels (comma separated):")
 
-    # TODO set generic output folder specified from filepath
+    if excl_channels != "":
+        excl_channels = excl_channels.split(",")
+        excl_channels = [int(i) for i in excl_channels]
+    else:
+        excl_channels = []
+
     output_folder_filepath = input("               Output folder filepath: ")
     if output_folder_filepath[0] == '"':
         output_folder_filepath = output_folder_filepath.replace('"', "")
@@ -51,6 +56,7 @@ while True:
     # Configuration
     conv_factor = 0.841
     channels = range(ch_min, ch_max + 1)
+    channels = np.setdiff1d(channels, excl_channels)
 
     # Determine if charge scan or threshold scan
     n_events = data.iloc[0][2]

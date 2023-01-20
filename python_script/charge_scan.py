@@ -13,6 +13,8 @@ def charge_scan(data, channels, conv_factor, output_folder):
     print("\nCHARGE SCAN\n")
     print("Working on it, be patient...\n")
 
+    excl_channels = np.setdiff1d(range(0, 32), channels)
+
     # All channels in the same plot
     threshold = data.iloc[0][0]
     n_events = data.iloc[0][2]
@@ -45,7 +47,9 @@ def charge_scan(data, channels, conv_factor, output_folder):
         + str(threshold)
         + ", "
         + str(n_events)
-        + " events)}"
+        + " events, excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}"
     )
     plt.ylim((-5, 105))
     plt.xlabel("Energy [keV]")
@@ -121,7 +125,9 @@ def charge_scan(data, channels, conv_factor, output_folder):
             + str(threshold)
             + ", "
             + str(n_events)
-            + " events)}"
+            + " events, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
         )
         plt.xlabel("Energy [keV]")
         plt.ylabel("Probability [\%]")
@@ -181,7 +187,9 @@ def charge_scan(data, channels, conv_factor, output_folder):
         data,
     )
     plt.title(
-        r"\textbf{Thresholds from Charge Scan}",
+        r"\textbf{Thresholds from Charge Scan (excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
     plt.xlabel("Threshold [keV]")
     plt.ylabel("Count")
@@ -218,7 +226,9 @@ def charge_scan(data, channels, conv_factor, output_folder):
     plt.xlabel("Channel")
     plt.ylabel("Threshold [keV]")
     plt.title(
-        r"\textbf{Thresholds from Charge Scan}",
+        r"\textbf{Thresholds from Charge Scan (excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
 
     plt.grid()
@@ -240,7 +250,9 @@ def charge_scan(data, channels, conv_factor, output_folder):
     plt.xlabel("Channel")
     plt.ylabel("ENC [keV]")
     plt.title(
-        r"\textbf{ENC from Charge Scan}",
+        r"\textbf{ENC from Charge Scan (excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
 
     plt.grid()

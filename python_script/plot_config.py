@@ -14,6 +14,10 @@ matplotlib.rcParams["font.size"] = 12
 # Boxplot line width
 matplotlib.rcParams["axes.linewidth"] = 0.7
 
+# TITLE
+# Title font size
+matplotlib.rcParams["axes.titlesize"] = 15
+
 # TICKS
 # Tick width
 matplotlib.rcParams["xtick.major.width"] = 0.7

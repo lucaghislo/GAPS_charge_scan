@@ -21,7 +21,7 @@ while True:
         filename_chargescan = filename_chargescan.replace('"', "")
     ch_min = int(input("                        First channel: "))
     ch_max = int(input("                         Last channel: "))
-    excl_channels = input("  Excluded channels (comma separated):")
+    excl_channels = input("  Excluded channels (comma separated): ")
 
     if excl_channels != "":
         excl_channels = excl_channels.split(",")

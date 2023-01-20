@@ -13,6 +13,8 @@ from compute_par_inj import get_parasitic_injection
 
 while True:
     # TODO check input correctness
+    print("\n*** GAPS CHARGE SCAN TOOL v1.0 ***\n")
+
     # Request user input
     filename_chargescan = input("    Charge or threshold scan filepath: ")
     if filename_chargescan[0] == '"':

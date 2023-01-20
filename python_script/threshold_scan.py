@@ -13,6 +13,8 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
     # Legend font size
     matplotlib.rcParams["legend.fontsize"] = 8.5
 
+    excl_channels = np.setdiff1d(range(0, 32), channels)
+
     print("\nTHRESHOLD SCAN\n")
     print("Working on it, be patient...\n")
     # All channels in the same plot
@@ -37,7 +39,13 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
 
         ch_count = ch_count + 1
 
-    plt.title(r"\textbf{Threshold Scan (" + str(n_events) + " events)}")
+    plt.title(
+        r"\textbf{Threshold Scan ("
+        + str(n_events)
+        + " events, excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}"
+    )
     plt.ylim((-5, 105))
     plt.xlabel("Discriminator Threshold [DAC\_thr code]")
     plt.ylabel("Probability [\%]")
@@ -98,7 +106,9 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
             + str(ch)
             + " ("
             + str(n_events)
-            + " events)}"
+            + " events, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
         )
         plt.xlabel("Discriminator Threshold [DAC\_thr code]")
         plt.ylabel("Probability [\%]")
@@ -153,7 +163,9 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
         data,
     )
     plt.title(
-        r"\textbf{Thresholds from Threshold Scan}",
+        r"\textbf{Thresholds from Threshold Scan(excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
     plt.xlabel("Threshold [DAC\_thr code]")
     plt.ylabel("Count")
@@ -190,7 +202,9 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
     plt.xlabel("Channel")
     plt.ylabel("Threshold [DAC\_thr code]")
     plt.title(
-        r"\textbf{Thresholds from Threshold Scan}",
+        r"\textbf{Thresholds from Threshold Scan (excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
 
     plt.grid()
@@ -212,7 +226,9 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
     plt.xlabel("Channel")
     plt.ylabel("ENC [DAC\_thr code]")
     plt.title(
-        r"\textbf{ENC from Threshold Scan}",
+        r"\textbf{ENC from Threshold Scan (excl. ch. "
+        + str(excl_channels)[1:-1].replace("'", "")
+        + ")}",
     )
 
     plt.grid()

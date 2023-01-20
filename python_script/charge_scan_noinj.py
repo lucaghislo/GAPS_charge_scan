@@ -21,6 +21,7 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     # Legend font size
     matplotlib.rcParams["legend.fontsize"] = 10
 
+    print("\nCHARGE SCAN")
     print("Charge scan without estimated parasitic injection\n")
     print("Working on it, be patient...\n")
 

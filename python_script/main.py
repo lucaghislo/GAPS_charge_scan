@@ -12,6 +12,7 @@ from compute_par_inj import get_parasitic_injection
 
 
 while True:
+    # TODO check input correctness
     # Request user input
     filename_chargescan = input("    Charge or threshold scan filepath: ")
     if filename_chargescan[0] == '"':

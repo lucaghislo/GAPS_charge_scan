@@ -16,7 +16,7 @@ matplotlib.rcParams["axes.linewidth"] = 0.7
 
 # TITLE
 # Title font size
-matplotlib.rcParams["axes.titlesize"] = 15
+matplotlib.rcParams["axes.titlesize"] = 13
 
 # TICKS
 # Tick width

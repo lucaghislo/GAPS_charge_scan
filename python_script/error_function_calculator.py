@@ -27,6 +27,14 @@ def compute_ERF(x, ch_data):
 
 
 def compute_ERF_thrscan(dac_range, events):
+    """
+    It takes a list of DAC values and a list of event counts, and returns the mean and standard
+    deviation of the DAC values where the event counts are non-zero
+
+    :param dac_range: the DAC values that were scanned
+    :param events: list of events per DAC value
+    :return: The mean and standard deviation of the dac_range_lim array.
+    """
     dac_range_lim = []
     events_lim = []
     max_counter = 0

@@ -1,6 +1,6 @@
 # Data folders and files
-python_script_CLI\input
-python_script_CLI\output
+python_script_CLI\input\
+python_script_CLI\output\
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

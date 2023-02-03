@@ -129,10 +129,8 @@ dmypy.json
 .pyre/
 
 # Data folders and files
-matlab_script/input
-matlab_script/output
-python_script/input
-python_script/output
+input/
+output/
 
 # VS code workspace file
 

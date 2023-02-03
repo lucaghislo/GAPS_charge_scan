@@ -145,7 +145,7 @@ Results are organised as follows
 
 ![charge_scan_ch0_THR_205_1](https://user-images.githubusercontent.com/36998696/216658156-3af2fe82-0a2f-48aa-a78c-fee9abf448a8.png)
 
-- `ENC_THR/ch#-#_ENC.pdf` and `ENC_THR/ch#-#_ENC_inj.pdf`: estimated ENC plot for all channels in specified range, with and without parasitic injection compensation.
+- `ENC_THR/ch#-#_ENC.pdf` and `ENC_THR/ch#-#_ENC_inj.pdf`: estimated ENC plot for all channels in the specified range, with and without parasitic injection compensation.
 
 ![ch0-31_ENC_1](https://user-images.githubusercontent.com/36998696/216660475-0f0f9cf3-0a71-4284-b845-717a58717a7f.png)
 
@@ -161,6 +161,6 @@ Results are organised as follows
 
 ![ch0-31_THR_hist_1](https://user-images.githubusercontent.com/36998696/216660727-ce348ced-3ab5-42e1-820b-1757da88f878.png)
 
-- `ENC_THR/ch#-#_THR_plot.pdf` and `ENC_THR/ch#-#_THR_plot_inj.pdf`: estimated threshold histogram for all channels in specified range, with and without parasitic injection compensation.
+- `ENC_THR/ch#-#_THR_plot.pdf` and `ENC_THR/ch#-#_THR_plot_inj.pdf`: estimated threshold plot for all channels in specified range, with and without parasitic injection compensation.
 
 ![ch0-31_THR_plot_1](https://user-images.githubusercontent.com/36998696/216660939-9184ca9f-463d-4aff-8fd8-d3c7a6e68dab.png)

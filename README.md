@@ -124,3 +124,9 @@ output_folder/
 In case parasitic injection has been compensated, the script adds the compensated version of every file listed above, identifiable by the "_inj" notation added to every filename.
 
 #### Output folder content
+
+Results are organised as follows
+
+- `charge_scan_ch#-#.pdf` and `charge_scan_ch#-#_inj.pdf`: charge scan overview with and without parasitic injection compensation.
+
+![charge_scan_ch0-31.png](readme_images\charge_scan_ch0-31.png)

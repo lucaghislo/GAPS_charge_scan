@@ -129,8 +129,8 @@ dmypy.json
 .pyre/
 
 # Data folders and files
-python_script_CLI/input/*
-python_script_CLI/output/*
+python_script_CLI/input/
+python_script_CLI/output/
 
 # VS code workspace file
 *.dat

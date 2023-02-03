@@ -20,10 +20,10 @@ max_ch = 31
 pt = 5
 
 thr_list = [
-    # 185,
-    # 190,
-    # 195,
-    # 200,
+    185,
+    190,
+    195,
+    200,
     205,
     206,
     207,
@@ -120,7 +120,7 @@ y = thr_list[0 : len(thr_list)]  # DAC_thr code
 
 plt.clf()
 plt.plot(y, x)
-# plt.show()
+plt.show()
 
 # Acquire thr scan data for given channel
 thr_scan_data = pd.read_csv(
@@ -186,7 +186,7 @@ for ch in channels:
         reconstructed_lin.append(val)
 
     plt.plot(ch_data, reconstructed_lin)
-    # plt.plot(thr_list, [0] * len(y))
+    plt.plot(thr_list, [0] * len(y))
     plt.plot([0] * len(range(200, 255)), range(200, 255))
 
     paras_inj_allch.append(abs(q - thr_scan_values_allch[ch]))

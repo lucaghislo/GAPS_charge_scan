@@ -97,3 +97,30 @@ CHARGE SCAN
 
 Working on it, be patient...
 ```
+
+### Results
+
+Results are stored in the specified output path. In case the user decided not to compensate the parasitic injection, the output folder is organised as follows:
+
+```
+output_folder/
+├── ENC_THR/
+│   ├── ch#-#_ENC.pdf
+│   ├── ch#-#_THR_ENC.dat
+│   ├── ch#-#_THR_hist.pdf
+│   └── ch#-#_THR_plot.pdf
+├── single_channels/
+│   ├── data/
+│   │   ├── ch_#_THR_###.dat
+│   │   ├── [...]
+│   │   └── ch_#_THR_###.dat
+│   └── plots/
+│       ├── charge_scan_ch#_THR_###.pdf
+│       ├── [...]
+│       └── charge_scan_ch#_THR_###.pdf
+└── charge_scan_ch#-#.pdf
+```
+
+In case parasitic injection has been compensated, the script adds the compensated version of every file listed above, identifiable by the "_inj" notation added to every filename.
+
+#### Output folder content

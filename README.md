@@ -130,3 +130,17 @@ Results are organised as follows
 - `charge_scan_ch#-#.pdf` and `charge_scan_ch#-#_inj.pdf`: charge scan overview with and without parasitic injection compensation.
 
 ![charge_scan_ch0-31_1](https://user-images.githubusercontent.com/36998696/216655868-975075dc-7042-490b-b2ba-c0783e3aaa2d.png)
+
+- `single_channels/data/ch_#_THR_###.dat` and `single_channels/data/ch_#_THR_###_inj.dat`: raw charge scan data with and without parasitic injection compensation for channel #. First column is the energy [keV] and the second column is the trigger probability [%].
+
+```
+   0.000000 0.000000
+   0.841000 0.000000
+   [...]
+   251.459000   100.000000
+   252.300000   100.000000
+```
+
+- `single_channels/plots/charge_scan_ch#_THR_###.pdf` and `single_channels/plots/charge_scan_ch#_THR_###_inj.pdf`: raw charge scan data with and without parasitic injection compensation for channel #.
+
+(image here)

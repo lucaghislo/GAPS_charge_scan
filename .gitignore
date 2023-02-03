@@ -1,6 +1,6 @@
 # Data folders and files
-input/*
-output/*
+input/
+output/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

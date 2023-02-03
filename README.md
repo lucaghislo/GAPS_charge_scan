@@ -147,7 +147,7 @@ Results are organised as follows
 
 - `ENC_THR/ch#-#_ENC.pdf` and `ENC_THR/ch#-#_ENC_inj.pdf`: estimated ENC plot for all channels in specified range, with and without parasitic injection compensation.
 
-(image here)
+![ch0-31_ENC_1](https://user-images.githubusercontent.com/36998696/216660475-0f0f9cf3-0a71-4284-b845-717a58717a7f.png)
 
 - `ENC_THR/ch#-#_ENC.dat` and `ENC_THR/ch#-#_ENC_inj.dat`: estimated threshold and ENC values for all channels in specified range, with and without parasitic injection compensation. The first column is the channel, second column is the threshold [keV] and the third column is the ENC [keV].
 
@@ -159,8 +159,8 @@ Results are organised as follows
 
 - `ENC_THR/ch#-#_THR_hist.pdf` and `ENC_THR/ch#-#_THR_hist_inj.pdf`: estimated threshold histogram for all channels in specified range, with and without parasitic injection compensation.
 
-(image here)
+![ch0-31_THR_hist_1](https://user-images.githubusercontent.com/36998696/216660727-ce348ced-3ab5-42e1-820b-1757da88f878.png)
 
-- `ENC_THR/ch#-#_THR_plot.pdf` and `ENC_THR/ch#-#_THR_hist_plot.pdf`: estimated threshold histogram for all channels in specified range, with and without parasitic injection compensation.
+- `ENC_THR/ch#-#_THR_plot.pdf` and `ENC_THR/ch#-#_THR_plot_inj.pdf`: estimated threshold histogram for all channels in specified range, with and without parasitic injection compensation.
 
-(image here)
+![ch0-31_THR_plot_1](https://user-images.githubusercontent.com/36998696/216660939-9184ca9f-463d-4aff-8fd8-d3c7a6e68dab.png)

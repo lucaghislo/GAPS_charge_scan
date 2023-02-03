@@ -123,6 +123,34 @@ output_folder/
 
 In case parasitic injection has been compensated, the script adds the compensated version of every file listed above, identifiable by the "_inj" notation added to every filename.
 
+```
+output_folder/
+├── ENC_THR/
+│   ├── ch#-#_ENC.pdf
+│   ├── ch#-#_ENC_inj.pdf
+│   ├── ch#-#_THR_ENC.dat
+│   ├── ch#-#_THR_ENC_inj.dat
+│   ├── ch#-#_THR_hist.pdf
+│   ├── ch#-#_THR_hist_inj.pdf
+│   ├── ch#-#_THR_plot.pdf
+│   └── ch#-#_THR_plot_inj.pdf
+├── single_channels/
+│   ├── data/
+│   │   ├── ch_#_THR_###.dat
+│   │   ├── ch_#_THR_###_inj.dat
+│   │   ├── [...]
+│   │   ├── ch_#_THR_###.dat
+│   │   └── ch_#_THR_###_inj.dat
+│   └── plots/
+│       ├── charge_scan_ch#_THR_###.pdf
+│       ├── charge_scan_ch#_THR_###_inj.pdf
+│       ├── [...]
+│       ├── charge_scan_ch#_THR_###.pdf
+│       └── charge_scan_ch#_THR_###_inj.pdf
+├── charge_scan_ch#-#.pdf
+└── charge_scan_ch#-#_inj.pdf
+```
+
 #### Output folder content
 
 Results are organised as follows:
@@ -134,11 +162,13 @@ Results are organised as follows:
 - `single_channels/data/ch_#_THR_###.dat` and `single_channels/data/ch_#_THR_###_inj.dat`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###. First column is the energy [keV] and the second column is the trigger probability [%].
 
 ```
+
    0.000000 0.000000
    0.841000 0.000000
    [...]
    251.459000   100.000000
    252.300000   100.000000
+
 ```
 
 - `single_channels/plots/charge_scan_ch#_THR_###.pdf` and `single_channels/plots/charge_scan_ch#_THR_###_inj.pdf`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###.
@@ -152,9 +182,11 @@ Results are organised as follows:
 - `ENC_THR/ch#-#_ENC.dat` and `ENC_THR/ch#-#_ENC_inj.dat`: estimated threshold and ENC values for all channels in specified range, with and without parasitic injection compensation. The first column is the channel, second column is the threshold [keV] and the third column is the ENC [keV].
 
 ```
+
 0   69.736702     5.965096
 [...]
 31  112.185906    4.861941
+
 ```
 
 - `ENC_THR/ch#-#_THR_hist.pdf` and `ENC_THR/ch#-#_THR_hist_inj.pdf`: estimated threshold histogram for all channels in specified range, with and without parasitic injection compensation.

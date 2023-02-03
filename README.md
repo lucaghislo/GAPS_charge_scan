@@ -144,3 +144,9 @@ Results are organised as follows
 - `single_channels/plots/charge_scan_ch#_THR_###.pdf` and `single_channels/plots/charge_scan_ch#_THR_###_inj.pdf`: raw charge scan data with and without parasitic injection compensation for channel #.
 
 (image here)
+
+- `ENC_THR/ch#-#_ENC.dat` and `ENC_THR/ch#-#_ENC_inj.dat`: estimated ENC plot for all channels in specified range.
+
+- `ENC_THR/ch#-#_ENC.pdf` and `ENC_THR/ch#-#_ENC_inj.pdf`: estimated ENC plot for all channels in specified range.
+
+(image here)

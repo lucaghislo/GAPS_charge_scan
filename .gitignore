@@ -135,3 +135,4 @@ output/
 # VS code workspace file
 
 *.dat
+*.code-workspace

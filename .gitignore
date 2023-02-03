@@ -130,10 +130,10 @@ dmypy.json
 
 # Data folders and files
 *.dat
-matlab_script/input/
-matlab_script/output/
-python_script/input/
-python_script/output/
+/matlab_script/input/
+/matlab_script/output/
+/python_script/input/
+/python_script/output/
 
 # VS code workspace file
 

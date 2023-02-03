@@ -155,11 +155,15 @@ output_folder/
 
 Results are organised as follows:
 
-- `charge_scan_ch#-#.pdf` and `charge_scan_ch#-#_inj.pdf`: charge scan overview with and without parasitic injection compensation.
+- `charge_scan_ch#-#.pdf`: charge scan overview for all channels in the specified range.
 
 ![charge_scan_ch0-31_1](https://user-images.githubusercontent.com/36998696/216655868-975075dc-7042-490b-b2ba-c0783e3aaa2d.png)
 
-- `single_channels/data/ch_#_THR_###.dat` and `single_channels/data/ch_#_THR_###_inj.dat`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###. First column is the energy [keV] and the second column is the trigger probability [%].
+- `charge_scan_ch#-#_inj.pdf`: charge scan overview with parasitic injection removed for all channels in the specified range.
+
+(image here)
+
+- `single_channels/data/ch_#_THR_###.dat` and `single_channels/data/ch_#_THR_###_inj.dat`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###. This is done for all channels in the specified range. First column is the energy [keV] and the second column is the trigger probability [%].
 
 ```
 
@@ -171,7 +175,7 @@ Results are organised as follows:
 
 ```
 
-- `single_channels/plots/charge_scan_ch#_THR_###.pdf` and `single_channels/plots/charge_scan_ch#_THR_###_inj.pdf`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###.
+- `single_channels/plots/charge_scan_ch#_THR_###.pdf` and `single_channels/plots/charge_scan_ch#_THR_###_inj.pdf`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###. This is done for all channels in the specified range.
 
 ![charge_scan_ch0_THR_205_1](https://user-images.githubusercontent.com/36998696/216658156-3af2fe82-0a2f-48aa-a78c-fee9abf448a8.png)
 

@@ -1,7 +1,6 @@
 # Data folders and files
 input/
 output/
-#readme_images/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

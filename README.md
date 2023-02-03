@@ -157,11 +157,11 @@ Results are organised as follows:
 
 - `charge_scan_ch#-#.pdf`: charge scan overview for all channels in the specified range.
 
-![charge_scan_ch0-31_1](https://user-images.githubusercontent.com/36998696/216655868-975075dc-7042-490b-b2ba-c0783e3aaa2d.png)
+![FTHR_THR_205_pt5_ch_0-31_1](https://user-images.githubusercontent.com/36998696/216663752-847b4119-5e77-4d80-94c3-25ea902bf05c.png)
 
 - `charge_scan_ch#-#_inj.pdf`: charge scan overview with parasitic injection removed for all channels in the specified range.
 
-(image here)
+![FTHR_THR_205_pt5_ch_0-31_inj_1](https://user-images.githubusercontent.com/36998696/216663898-0e7cc452-ee2c-46e3-a66c-d68308d760f6.png)
 
 - `single_channels/data/ch_#_THR_###.dat` and `single_channels/data/ch_#_THR_###_inj.dat`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###. This is done for all channels in the specified range. First column is the energy [keV] and the second column is the trigger probability [%].
 

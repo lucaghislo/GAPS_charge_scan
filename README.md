@@ -129,4 +129,4 @@ Results are organised as follows
 
 - `charge_scan_ch#-#.pdf` and `charge_scan_ch#-#_inj.pdf`: charge scan overview with and without parasitic injection compensation.
 
-![charge_scan_ch0-31.png](readme_images\charge_scan_ch0-31.png)
+![charge_scan_ch0-31.png]()

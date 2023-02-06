@@ -1,6 +1,7 @@
 import os as os
 import numpy as np
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 

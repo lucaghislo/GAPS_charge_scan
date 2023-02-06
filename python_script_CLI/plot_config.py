@@ -1,11 +1,10 @@
 import matplotlib
 import matplotlib.pyplot as plt
 
-matplotlib.rcParams.update(matplotlib.rcParamsDefault)
-
 # TEX INTERPRETER
 # Interpreter set to LaTex
 # plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
+plt.rcParams.update({"text.usetex": False})
 # plt.rc("text.latex", preamble=r"\usepackage{asmath}")
 
 # FIGURE

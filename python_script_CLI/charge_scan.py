@@ -42,15 +42,25 @@ def charge_scan(data, channels, conv_factor, output_folder):
         )
         ch_count = ch_count + 1
 
-    plt.title(
-        r"\textbf{Charge scan (THR: "
-        + str(threshold)
-        + ", "
-        + str(n_events)
-        + " events, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}"
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Charge scan (THR: "
+            + str(threshold)
+            + ", "
+            + str(n_events)
+            + " events, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
+        )
+    else:
+        plt.title(
+            r"\textbf{Charge scan (THR: "
+            + str(threshold)
+            + ", "
+            + str(n_events)
+            + " events"
+            + ")}"
+        )
     plt.ylim((-5, 105))
     plt.xlabel("Energy [keV]")
     plt.ylabel("Probability [\%]")
@@ -80,7 +90,8 @@ def charge_scan(data, channels, conv_factor, output_folder):
         + ".pdf",
     )
     plt.savefig(allch_filename)
-    print("Saved: " + allch_filename + "\n")
+    plt.savefig(allch_filename.replace(".pdf", ".png"))
+    print("Saved: " + allch_filename.replace(".pdf", "") + "\n")
 
     parameters = np.zeros([1, 2])
 
@@ -125,8 +136,7 @@ def charge_scan(data, channels, conv_factor, output_folder):
             + str(threshold)
             + ", "
             + str(n_events)
-            + " events, excl. ch. "
-            + str(excl_channels)[1:-1].replace("'", "")
+            + " events"
             + ")}"
         )
         plt.xlabel("Energy [keV]")
@@ -138,6 +148,12 @@ def charge_scan(data, channels, conv_factor, output_folder):
             os.path.join(
                 output_folder_spec_single_plot,
                 "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + ".pdf",
+            )
+        )
+        plt.savefig(
+            os.path.join(
+                output_folder_spec_single_plot,
+                "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + ".png",
             )
         )
 
@@ -186,11 +202,16 @@ def charge_scan(data, channels, conv_factor, output_folder):
     (n, bins, hist) = plt.hist(
         data,
     )
-    plt.title(
-        r"\textbf{Thresholds from Charge Scan (excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan}",
+        )
     plt.xlabel("Threshold [keV]")
     plt.ylabel("Count")
 
@@ -220,16 +241,32 @@ def charge_scan(data, channels, conv_factor, output_folder):
         )
     )
 
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_THR_hist.png",
+        )
+    )
+
     # Plot threshold derived from charge scan
     plt.clf()
     plt.plot(range(0, len(channels)), parameters[:, 0], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("Threshold [keV]")
-    plt.title(
-        r"\textbf{Thresholds from Charge Scan (excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan}",
+        )
 
     plt.grid()
 
@@ -244,16 +281,30 @@ def charge_scan(data, channels, conv_factor, output_folder):
         )
     )
 
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_THR_plot.png",
+        )
+    )
+
     # Plot ENC derived from charge scan
     plt.clf()
     plt.plot(range(0, len(channels)), parameters[:, 1], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("ENC [keV]")
-    plt.title(
-        r"\textbf{ENC from Charge Scan (excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{ENC from Charge Scan (excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(r"\textbf{ENC from Charge Scan}")
 
     plt.grid()
 
@@ -265,6 +316,17 @@ def charge_scan(data, channels, conv_factor, output_folder):
             + "-"
             + str(channels[len(channels) - 1])
             + "_ENC.pdf",
+        )
+    )
+
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_ENC.png",
         )
     )
 

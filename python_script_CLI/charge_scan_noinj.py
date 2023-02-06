@@ -58,15 +58,25 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         )
         ch_count = ch_count + 1
 
-    plt.title(
-        r"\textbf{Charge scan (THR: "
-        + str(threshold)
-        + ", "
-        + str(n_events)
-        + r" events, parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}"
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Charge scan (THR: "
+            + str(threshold)
+            + ", "
+            + str(n_events)
+            + r" events, parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
+        )
+    else:
+        plt.title(
+            r"\textbf{Charge scan (THR: "
+            + str(threshold)
+            + ", "
+            + str(n_events)
+            + r" events, parasitic injection removed"
+            + ")}"
+        )
     plt.ylim((-5, 105))
     plt.xlabel("Energy [keV]")
     plt.ylabel("Probability [\%]")
@@ -95,6 +105,7 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         + "_inj.pdf",
     )
     plt.savefig(allch_filename)
+    plt.savefig(allch_filename.replace(".pdf", ".png"))
     print("Saved: " + allch_filename + "\n")
 
     parameters = np.zeros([1, 2])
@@ -133,17 +144,29 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
             + str(round(sigma, 5))
             + " keV",
         )
-        plt.title(
-            r"\textbf{Charge Scan ch. "
-            + str(ch)
-            + " (THR: "
-            + str(threshold)
-            + ", "
-            + str(n_events)
-            + r" events, parasitic injection removed, excl. ch. "
-            + str(excl_channels)[1:-1].replace("'", "")
-            + ")}"
-        )
+        if len(excl_channels) != 0:
+            plt.title(
+                r"\textbf{Charge Scan ch. "
+                + str(ch)
+                + " (THR: "
+                + str(threshold)
+                + ", "
+                + str(n_events)
+                + r" events, parasitic injection removed, excl. ch. "
+                + str(excl_channels)[1:-1].replace("'", "")
+                + ")}"
+            )
+        else:
+            plt.title(
+                r"\textbf{Charge Scan ch. "
+                + str(ch)
+                + " (THR: "
+                + str(threshold)
+                + ", "
+                + str(n_events)
+                + r" events, parasitic injection removed"
+                + ")}"
+            )
         plt.xlabel("Energy [keV]")
         plt.ylabel("Probability [\%]")
         plt.grid()
@@ -153,6 +176,12 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
             os.path.join(
                 output_folder_spec_single_plot,
                 "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + "_inj.pdf",
+            )
+        )
+        plt.savefig(
+            os.path.join(
+                output_folder_spec_single_plot,
+                "charge_scan_ch" + str(ch) + "_THR_" + str(threshold) + "_inj.png",
             )
         )
 
@@ -201,11 +230,16 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     (n, bins, hist) = plt.hist(
         data,
     )
-    plt.title(
-        r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (parasitic injection removed)}",
+        )
     plt.xlabel("Threshold [keV]")
     plt.ylabel("Count")
 
@@ -235,16 +269,30 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         )
     )
 
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_THR_hist_inj.png",
+        )
+    )
+
     # Plot threshold derived from charge scan
     plt.clf()
     plt.plot(range(0, len(channels)), parameters[:, 0], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("Threshold [keV]")
-    plt.title(
-        r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(r"\textbf{Thresholds from Charge Scan (parasitic injection removed)")
 
     plt.grid()
 
@@ -259,16 +307,30 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         )
     )
 
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_THR_plot_inj.png",
+        )
+    )
+
     # Plot ENC derived from charge scan
     plt.clf()
     plt.plot(range(0, len(channels)), parameters[:, 1], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("ENC [keV]")
-    plt.title(
-        r"\textbf{ENC from Charge Scan (parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{ENC from Charge Scan (parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(r"\textbf{ENC from Charge Scan (parasitic injection removed)")
 
     plt.grid()
 
@@ -280,5 +342,16 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
             + "-"
             + str(channels[len(channels) - 1])
             + "_ENC_inj.pdf",
+        )
+    )
+
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_ENC_inj.png",
         )
     )

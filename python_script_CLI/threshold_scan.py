@@ -39,13 +39,16 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
 
         ch_count = ch_count + 1
 
-    plt.title(
-        r"\textbf{Threshold Scan ("
-        + str(n_events)
-        + " events, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}"
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Threshold Scan ("
+            + str(n_events)
+            + " events, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
+        )
+    else:
+        plt.title(r"\textbf{Threshold Scan (" + str(n_events) + " events" + ")}")
     plt.ylim((-5, 105))
     plt.xlabel("Discriminator Threshold [DAC\_thr code]")
     plt.ylabel("Probability [\%]")
@@ -101,15 +104,25 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
             + str(round(sigma, 5))
             + " DAC\_thr code",
         )
-        plt.title(
-            r"\textbf{Threshold Scan ch. "
-            + str(ch)
-            + " ("
-            + str(n_events)
-            + " events, excl. ch. "
-            + str(excl_channels)[1:-1].replace("'", "")
-            + ")}"
-        )
+        if len(excl_channels) != 0:
+            plt.title(
+                r"\textbf{Threshold Scan ch. "
+                + str(ch)
+                + " ("
+                + str(n_events)
+                + " events, excl. ch. "
+                + str(excl_channels)[1:-1].replace("'", "")
+                + ")}"
+            )
+        else:
+            plt.title(
+                r"\textbf{Threshold Scan ch. "
+                + str(ch)
+                + " ("
+                + str(n_events)
+                + " events"
+                + ")}"
+            )
         plt.xlabel("Discriminator Threshold [DAC\_thr code]")
         plt.ylabel("Probability [\%]")
         plt.grid()
@@ -162,11 +175,16 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
     (n, bins, hist) = plt.hist(
         data,
     )
-    plt.title(
-        r"\textbf{Thresholds from Threshold Scan(excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Threshold Scan (excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{Thresholds from Threshold Scan}",
+        )
     plt.xlabel("Threshold [DAC\_thr code]")
     plt.ylabel("Count")
 
@@ -201,11 +219,16 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
     plt.plot(range(0, len(channels)), parameters[:, 0], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("Threshold [DAC\_thr code]")
-    plt.title(
-        r"\textbf{Thresholds from Threshold Scan (excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Threshold Scan (excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{Thresholds from Threshold Scan}",
+        )
 
     plt.grid()
 
@@ -225,11 +248,16 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
     plt.plot(range(0, len(channels)), parameters[:, 1], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("ENC [DAC\_thr code]")
-    plt.title(
-        r"\textbf{ENC from Threshold Scan (excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{ENC from Threshold Scan (excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{ENC from Threshold Scan}",
+        )
 
     plt.grid()
 

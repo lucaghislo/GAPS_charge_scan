@@ -58,15 +58,25 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
         )
         ch_count = ch_count + 1
 
-    plt.title(
-        r"\textbf{Charge scan (THR: "
-        + str(threshold)
-        + ", "
-        + str(n_events)
-        + r" events, parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}"
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Charge scan (THR: "
+            + str(threshold)
+            + ", "
+            + str(n_events)
+            + r" events, parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}"
+        )
+    else:
+        plt.title(
+            r"\textbf{Charge scan (THR: "
+            + str(threshold)
+            + ", "
+            + str(n_events)
+            + r" events, parasitic injection removed"
+            + ")}"
+        )
     plt.ylim((-5, 105))
     plt.xlabel("Energy [keV]")
     plt.ylabel("Probability [\%]")
@@ -133,17 +143,29 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
             + str(round(sigma, 5))
             + " keV",
         )
-        plt.title(
-            r"\textbf{Charge Scan ch. "
-            + str(ch)
-            + " (THR: "
-            + str(threshold)
-            + ", "
-            + str(n_events)
-            + r" events, parasitic injection removed, excl. ch. "
-            + str(excl_channels)[1:-1].replace("'", "")
-            + ")}"
-        )
+        if len(excl_channels) != 0:
+            plt.title(
+                r"\textbf{Charge Scan ch. "
+                + str(ch)
+                + " (THR: "
+                + str(threshold)
+                + ", "
+                + str(n_events)
+                + r" events, parasitic injection removed, excl. ch. "
+                + str(excl_channels)[1:-1].replace("'", "")
+                + ")}"
+            )
+        else:
+            plt.title(
+                r"\textbf{Charge Scan ch. "
+                + str(ch)
+                + " (THR: "
+                + str(threshold)
+                + ", "
+                + str(n_events)
+                + r" events, parasitic injection removed"
+                + ")}"
+            )
         plt.xlabel("Energy [keV]")
         plt.ylabel("Probability [\%]")
         plt.grid()
@@ -201,11 +223,16 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     (n, bins, hist) = plt.hist(
         data,
     )
-    plt.title(
-        r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (parasitic injection removed)}",
+        )
     plt.xlabel("Threshold [keV]")
     plt.ylabel("Count")
 
@@ -240,11 +267,14 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     plt.plot(range(0, len(channels)), parameters[:, 0], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("Threshold [keV]")
-    plt.title(
-        r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{Thresholds from Charge Scan (parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(r"\textbf{Thresholds from Charge Scan (parasitic injection removed)")
 
     plt.grid()
 
@@ -264,11 +294,14 @@ def charge_scan_noinj(data, channels, conv_factor, output_folder, xmin, xmax):
     plt.plot(range(0, len(channels)), parameters[:, 1], marker="o")
     plt.xlabel("Channel")
     plt.ylabel("ENC [keV]")
-    plt.title(
-        r"\textbf{ENC from Charge Scan (parasitic injection removed, excl. ch. "
-        + str(excl_channels)[1:-1].replace("'", "")
-        + ")}",
-    )
+    if len(excl_channels) != 0:
+        plt.title(
+            r"\textbf{ENC from Charge Scan (parasitic injection removed, excl. ch. "
+            + str(excl_channels)[1:-1].replace("'", "")
+            + ")}",
+        )
+    else:
+        plt.title(r"\textbf{ENC from Charge Scan (parasitic injection removed)")
 
     plt.grid()
 

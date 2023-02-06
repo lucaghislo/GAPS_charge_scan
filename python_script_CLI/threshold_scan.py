@@ -76,7 +76,8 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
         + ".pdf",
     )
     plt.savefig(allch_filename)
-    print("Saved: " + allch_filename + "\n")
+    plt.savefig(allch_filename.replace(".pdf", ".png"))
+    print("Saved: " + allch_filename.replace(".pdf", "") + "\n")
 
     parameters = np.zeros([1, 2])
 
@@ -132,6 +133,12 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
             os.path.join(
                 output_folder_spec_single,
                 "charge_scan_ch" + str(ch) + ".pdf",
+            )
+        )
+        plt.savefig(
+            os.path.join(
+                output_folder_spec_single,
+                "charge_scan_ch" + str(ch) + ".png",
             )
         )
 
@@ -213,6 +220,16 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
             + "_THR_hist.pdf",
         )
     )
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_THR_hist.png",
+        )
+    )
 
     # Plot threshold derived from charge scan
     plt.clf()
@@ -243,6 +260,17 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
         )
     )
 
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_THR_plot.png",
+        )
+    )
+
     # Plot ENC derived from charge scan
     plt.clf()
     plt.plot(range(0, len(channels)), parameters[:, 1], marker="o")
@@ -269,6 +297,17 @@ def threshold_scan(data_bkp, channels, n_events, output_folder):
             + "-"
             + str(channels[len(channels) - 1])
             + "_ENC.pdf",
+        )
+    )
+
+    plt.savefig(
+        os.path.join(
+            ENC_THR_folder,
+            "ch"
+            + str(channels[0])
+            + "-"
+            + str(channels[len(channels) - 1])
+            + "_ENC.png",
         )
     )
 

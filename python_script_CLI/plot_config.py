@@ -10,6 +10,8 @@ plt.rcParams.update({"text.usetex": False})
 # FIGURE
 # Font size
 matplotlib.rcParams["font.size"] = 12
+# Figure size
+matplotlib.rcParams["figure.figsize"] = 6.4 * 1.5, 4.8 * 1.5
 
 # BOXPLOT
 # Boxplot line width
@@ -27,17 +29,17 @@ matplotlib.rcParams["ytick.major.width"] = 0.7
 matplotlib.rcParams["xtick.direction"] = "inout"
 matplotlib.rcParams["ytick.direction"] = "inout"
 # Tick label size
-matplotlib.rcParams["xtick.labelsize"] = 12
-matplotlib.rcParams["ytick.labelsize"] = 12
+matplotlib.rcParams["xtick.labelsize"] = 13
+matplotlib.rcParams["ytick.labelsize"] = 13
 
 # LEGEND
 # Legend font size
-matplotlib.rcParams["legend.fontsize"] = 12
+matplotlib.rcParams["legend.fontsize"] = 10
 matplotlib.rcParams["legend.framealpha"] = 1
 
 # AXIS
 # Label size
-matplotlib.rcParams["axes.labelsize"] = 12
+matplotlib.rcParams["axes.labelsize"] = 13
 
 # GRID
 # Grid transparency

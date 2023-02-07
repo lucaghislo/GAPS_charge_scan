@@ -13,7 +13,7 @@ from compute_par_inj import get_parasitic_injection
 
 while True:
     # TODO check input correctness
-    print("\n*** GAPS CHARGE SCAN TOOL v1.0 ***\n")
+    print("\n*** GAPS CHARGE SCAN TOOL v1.2 ***\n")
 
     # Request user input
     filename_chargescan = input("    Charge or threshold scan filepath: ")
@@ -32,20 +32,6 @@ while True:
     output_folder_filepath = input("               Output folder filepath: ")
     if output_folder_filepath[0] == '"':
         output_folder_filepath = output_folder_filepath.replace('"', "")
-
-    # LaTex interpreter
-    plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
-
-    # PLOT CONFIGURATION
-    # Label size
-    matplotlib.rcParams["axes.labelsize"] = 13
-    # Tick label size
-    matplotlib.rcParams["xtick.labelsize"] = 13
-    matplotlib.rcParams["ytick.labelsize"] = 13
-    # Figure size
-    matplotlib.rcParams["figure.figsize"] = 6.4 * 1.5, 4.8 * 1.5
-    # Legend font size
-    matplotlib.rcParams["legend.fontsize"] = 10
 
     # Read data from file
     data = pd.read_csv(
@@ -108,6 +94,7 @@ while True:
                 output_folder_filepath,
                 xmin,
                 xmax,
+                allch_par_inj_estimate,
             )
 
     else:

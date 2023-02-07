@@ -20,7 +20,7 @@ Download the [latest release](https://github.com/lucaghislo/GAPS_charge_scan/rel
 
 ### Usage
 
-Once launched, the script requires to input the **complete filepath** of the necessary files required to compute the charge scan (or threshold scan). The filepath can be supplied either sorrounded by single ('') or double ("") quotation marks, but can also be written without.
+Once launched, the script requires to input the **complete filepath** of the necessary files required to compute the charge scan (or threshold scan). The filepath can be supplied either sorrounded by single ('') or double ("") quotation marks, but can also be written without. The program check for user input correctness and, in case it is not, the program asks for user input again.
 
 #### Charge scan (or threshold scan) filepath
 
@@ -61,6 +61,14 @@ The user is required to input the path of the folder where the results will be s
 
 ```
                Output folder filepath: C:\path\output_folder  
+```
+
+#### Channel deactivation lower threshold
+
+The user can input the threshold, in keV, below which channels are deactivated.
+
+```
+      Deactivate channels below [keV]: 30 
 ```
 
 #### Parasitic injection compensation
@@ -106,9 +114,12 @@ Results are stored in the specified output path. In case the user decided not to
 output_folder/
 ├── ENC_THR/
 │   ├── ch#-#_ENC.pdf
+│   ├── ch#-#_ENC.png
 │   ├── ch#-#_THR_ENC.dat
 │   ├── ch#-#_THR_hist.pdf
-│   └── ch#-#_THR_plot.pdf
+│   ├── ch#-#_THR_hist.png
+│   ├── ch#-#_THR_plot.pdf
+│   └── ch#-#_THR_plot.png
 ├── single_channels/
 │   ├── data/
 │   │   ├── ch_#_THR_###.dat
@@ -116,9 +127,13 @@ output_folder/
 │   │   └── ch_#_THR_###.dat
 │   └── plots/
 │       ├── charge_scan_ch#_THR_###.pdf
+│       ├── charge_scan_ch#_THR_###.png
 │       ├── [...]
-│       └── charge_scan_ch#_THR_###.pdf
-└── charge_scan_ch#-#.pdf
+│       ├── charge_scan_ch#_THR_###.pdf
+│       └── charge_scan_ch#_THR_###.png
+├── ch#-#_activation_mask.txt
+├── charge_scan_ch#-#.pdf
+└── charge_scan_ch#-#.png
 ```
 
 In case parasitic injection has been compensated, the script adds the compensated version of every file listed above, identifiable by the "_inj" notation added to every filename.
@@ -127,13 +142,19 @@ In case parasitic injection has been compensated, the script adds the compensate
 output_folder/
 ├── ENC_THR/
 │   ├── ch#-#_ENC.pdf
+│   ├── ch#-#_ENC.png
 │   ├── ch#-#_ENC_inj.pdf
+│   ├── ch#-#_ENC_inj.png
 │   ├── ch#-#_THR_ENC.dat
 │   ├── ch#-#_THR_ENC_inj.dat
 │   ├── ch#-#_THR_hist.pdf
+│   ├── ch#-#_THR_hist.png
 │   ├── ch#-#_THR_hist_inj.pdf
+│   ├── ch#-#_THR_hist_inj.png
 │   ├── ch#-#_THR_plot.pdf
-│   └── ch#-#_THR_plot_inj.pdf
+│   ├── ch#-#_THR_plot.png
+│   ├── ch#-#_THR_plot_inj.pdf
+│   └── ch#-#_THR_plot_inj.png
 ├── single_channels/
 │   ├── data/
 │   │   ├── ch_#_THR_###.dat
@@ -144,11 +165,19 @@ output_folder/
 │   └── plots/
 │       ├── charge_scan_ch#_THR_###.pdf
 │       ├── charge_scan_ch#_THR_###_inj.pdf
+│       ├── charge_scan_ch#_THR_###.png
+│       ├── charge_scan_ch#_THR_###_inj.png
 │       ├── [...]
 │       ├── charge_scan_ch#_THR_###.pdf
-│       └── charge_scan_ch#_THR_###_inj.pdf
+│       ├─ charge_scan_ch#_THR_###_inj.pdf
+│       ├── charge_scan_ch#_THR_###.png
+│       └── charge_scan_ch#_THR_###_inj.png
+├── ch#-#_activation_mask.txt
 ├── charge_scan_ch#-#.pdf
-└── charge_scan_ch#-#_inj.pdf
+├── charge_scan_ch#-#_inj.pdf
+├── charge_scan_ch#-#.png
+├── charge_scan_ch#-#_inj.png
+└── summary_inj_ch#-#.dat
 ```
 
 #### Output folder content
@@ -166,7 +195,6 @@ Results are organised as follows:
 - `single_channels/data/ch_#_THR_###.dat` and `single_channels/data/ch_#_THR_###_inj.dat`: raw charge scan data with and without parasitic injection compensation for channel # at DAC_thr_code ###. This is done for all channels in the specified range. First column is the energy [keV] and the second column is the trigger probability [%].
 
 ```
-
    0.000000     0.000000
    0.841000     0.000000
    [...]
@@ -186,7 +214,7 @@ Results are organised as follows:
 - `ENC_THR/ch#-#_ENC.dat` and `ENC_THR/ch#-#_ENC_inj.dat`: estimated threshold and ENC values for all channels in specified range, with and without parasitic injection compensation. The first column is the channel, second column is the threshold [keV] and the third column is the ENC [keV].
 
 ```
-
+ch  thr           enc
 0   69.736702     5.965096
 [...]
 31  112.185906    4.861941

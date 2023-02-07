@@ -22,7 +22,8 @@ def get_parasitic_injection(
     (fdt_gain, fdt_pedestal) = get_linear_gain_realfdt(fdt_filepath, ch, pt, 200)
 
     # Determine parasitic injection
-    ch_par_inj = abs(pedestal_ch - fdt_pedestal)
+    ch_par_inj = abs(pedestal_ch - fdt_pedestal)  # ADU
+    ch_par_inj = ch_par_inj * (1 / fdt_gain)  # keV
 
     with open(summary_data_filepath, "a") as fp:
         fp.write(

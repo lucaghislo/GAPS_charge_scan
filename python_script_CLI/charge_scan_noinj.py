@@ -9,7 +9,14 @@ from erf_function import *
 
 # CHARGE SCAN WITHOUT PARASITIC INJECTION ESTIMATED FROM PEDESTAL AND FDT INTERPOLATION
 def charge_scan_noinj(
-    data, channels, conv_factor, output_folder, xmin, xmax, par_inj_pedestal
+    data,
+    channels,
+    conv_factor,
+    output_folder,
+    xmin,
+    xmax,
+    par_inj_pedestal,
+    deactivate_thr,
 ):
 
     # Legend font size
@@ -29,19 +36,18 @@ def charge_scan_noinj(
     plt.clf()
     ch_count = 0
     lim_flags_nan = []
+    lim_flags_thr = []
     for ch in channels:
         ch_data = data[data.iloc[:, 4] == ch]
         inj_range = ch_data.iloc[:, 1]
         events = ch_data.iloc[:, 3]
         inj_range = [inj_i * conv_factor - par_inj_pedestal[ch] for inj_i in inj_range]
         events = [ev_i / n_events * 100 for ev_i in events]
-
         (mu, sigma) = compute_ERF(inj_range, events)
-
         lim_flag_nan = False
         if mu > thr_limit_NaN:
             lim_flag_nan = True
-
+        lim_flags_thr.append(mu < deactivate_thr or lim_flag_nan)
         lim_flags_nan.append(lim_flag_nan)
         plt.plot(
             inj_range,
@@ -229,6 +235,37 @@ def charge_scan_noinj(
                 )
             else:
                 filehandle.write("%d\tnan\t\tnan\n" % (channels[i]))
+
+    # Write activation mask to file
+    with open(
+        os.path.join(
+            output_folder,
+            "ch"
+            + str(np.min(channels))
+            + "-"
+            + str(np.max(channels))
+            + "_activation_mask_inj.txt",
+        ),
+        "w",
+    ) as filehandle:
+        allch_flag = ""
+        for i in range(0, len(channels)):
+            ch_flag = 0
+            if not lim_flags_thr[i]:
+                ch_flag = 1
+
+            allch_flag = allch_flag + str(ch_flag)
+
+        filehandle.write(
+            "# Ch. " + str(np.min(channels)) + " to " + str(np.max(channels)) + "\n"
+        )
+        filehandle.write(allch_flag)
+        filehandle.write(
+            "\n\n# Ch. " + str(np.max(channels)) + " to " + str(np.min(channels)) + "\n"
+        )
+        filehandle.write(allch_flag[len(allch_flag) :: -1])
+
+    filehandle.close()
 
     # Plot histogram of threshold data
     plt.clf()

@@ -62,6 +62,9 @@ while True:
     if output_folder_filepath[0] == '"':
         output_folder_filepath = output_folder_filepath.replace('"', "")
 
+    # Ask threshold for channel deactivation
+    deactivate_thr = int(input("      Deactivate channels below [keV]: "))
+
     # Read data from file
     data = pd.read_csv(
         filename_chargescan,
@@ -125,7 +128,9 @@ while True:
 
         # Charge scan without removal of parasitic injection
         # Always done
-        (xmin, xmax) = charge_scan(data, channels, conv_factor, output_folder_filepath)
+        (xmin, xmax) = charge_scan(
+            data, channels, conv_factor, output_folder_filepath, deactivate_thr
+        )
 
         # Charge scan with removal of parasitic injection
         if comp_parinj_flag == "y":
@@ -159,6 +164,7 @@ while True:
                 xmin,
                 xmax,
                 allch_par_inj_estimate,
+                deactivate_thr,
             )
 
     else:

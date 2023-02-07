@@ -44,7 +44,7 @@ def get_parasitic_injection(
         + str(ch)
         + "\tGain: "
         + str(np.round(fdt_gain, 5))
-        + "\tPedestal fdt:"
+        + "\tPedestal fdt: "
         + str(np.round(fdt_pedestal, 5))
         + "\tPedestal auto: "
         + str(np.round(pedestal_ch, 5))

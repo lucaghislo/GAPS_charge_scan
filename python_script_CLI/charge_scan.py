@@ -1,6 +1,6 @@
 import os as os
 import numpy as np
-import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
@@ -9,7 +9,16 @@ from error_function_calculator import compute_ERF
 from erf_function import *
 
 # CHARGE SCAN
-def charge_scan(data, channels, conv_factor, output_folder):
+def charge_scan(
+    data,
+    channels,
+    conv_factor,
+    output_folder,
+    deactivate_thr,
+):
+
+    thr_limit_NaN = 300
+
     print("\nCHARGE SCAN\n")
     print("Working on it, be patient...\n")
 
@@ -20,6 +29,8 @@ def charge_scan(data, channels, conv_factor, output_folder):
     n_events = data.iloc[0][2]
     plt.clf()
     ch_count = 0
+    lim_flags_nan = []
+    lim_flags_thr = []
     for ch in channels:
         ch_data = data[data.iloc[:, 4] == ch]
         inj_range = ch_data.iloc[:, 1]
@@ -27,15 +38,19 @@ def charge_scan(data, channels, conv_factor, output_folder):
         inj_range = [inj_i * conv_factor for inj_i in inj_range]
         events = [ev_i / n_events * 100 for ev_i in events]
         (mu, sigma) = compute_ERF(inj_range, events)
+        lim_flag_nan = False
+        if mu > thr_limit_NaN:
+            lim_flag_nan = True
+        lim_flags_thr.append(mu < deactivate_thr or lim_flag_nan)
+        lim_flags_nan.append(lim_flag_nan)
         plt.plot(
             inj_range,
             events,
             label=str(ch)
             + " THR: "
-            + str(round(mu, 2))
-            + " keV\n ENC: "
-            + str(round(sigma, 2))
-            + " keV",
+            + (str(round(mu, 2)) + " keV" if not lim_flag_nan else "nan")
+            + " \n ENC: "
+            + (str(round(sigma, 2)) + " keV" if not lim_flag_nan else "nan"),
             linestyle="--"
             if ch_count >= len(channels) / 2 and len(channels) > 16
             else "-",
@@ -110,7 +125,7 @@ def charge_scan(data, channels, conv_factor, output_folder):
 
     # Legend font size
     matplotlib.rcParams["legend.fontsize"] = 13
-
+    ch_counter = 0
     for ch in channels:
         plt.clf()
         ch_data = data[data.iloc[:, 4] == ch]
@@ -124,10 +139,13 @@ def charge_scan(data, channels, conv_factor, output_folder):
             inj_range,
             events,
             label="THR: "
-            + str(round(mu, 5))
-            + " keV\n ENC: "
-            + str(round(sigma, 5))
-            + " keV",
+            + (str(round(mu, 5)) + " keV" if not lim_flags_nan[ch_counter] else "nan")
+            + "\n ENC: "
+            + (
+                str(round(sigma, 5)) + " keV"
+                if not lim_flags_nan[ch_counter]
+                else "nan"
+            ),
         )
         plt.title(
             r"\textbf{Charge Scan ch. "
@@ -172,6 +190,8 @@ def charge_scan(data, channels, conv_factor, output_folder):
             for i in range(0, len(inj_range)):
                 filehandle.write("   %f\t%f\n" % (inj_range[i], events[i]))
 
+        ch_counter = ch_counter + 1
+
     parameters = parameters[1:, :]
     ENC_THR_folder = os.path.join(output_folder_spec, "ENC_THR")
 
@@ -190,18 +210,62 @@ def charge_scan(data, channels, conv_factor, output_folder):
         ),
         "w",
     ) as filehandle:
+        filehandle.write("ch\tthr\tenc\n")
         for i in range(0, len(channels)):
-            filehandle.write(
-                "%d\t%f\t\t%f\n" % (channels[i], parameters[i, 0], parameters[i, 1])
-            )
+            if not lim_flags_nan[i]:
+                filehandle.write(
+                    "%d\t%f\t\t%f\n" % (channels[i], parameters[i, 0], parameters[i, 1])
+                )
+            else:
+                filehandle.write("%d\tnan\t\tnan\n" % (channels[i]))
+
+    # Write activation mask to file
+    with open(
+        os.path.join(
+            output_folder,
+            "ch"
+            + str(np.min(channels))
+            + "-"
+            + str(np.max(channels))
+            + "_activation_mask.txt",
+        ),
+        "w",
+    ) as filehandle:
+        allch_flag = ""
+        for i in range(0, len(channels)):
+            ch_flag = 0
+            if not lim_flags_thr[i]:
+                ch_flag = 1
+
+            allch_flag = allch_flag + str(ch_flag)
+
+        filehandle.write(
+            "# Ch. " + str(np.min(channels)) + " to " + str(np.max(channels)) + "\n"
+        )
+        filehandle.write(allch_flag)
+        filehandle.write(
+            "\n\n# Ch. " + str(np.max(channels)) + " to " + str(np.min(channels)) + "\n"
+        )
+        filehandle.write(allch_flag[len(allch_flag) :: -1])
+
+    filehandle.close()
 
     # Plot histogram of threshold data
     plt.clf()
-    data = parameters[:, 0]
-    plot_data = [int(data_i) for data_i in data]
-    (n, bins, hist) = plt.hist(
-        data,
-    )
+    for i in range(0, len(parameters[:, 0])):
+        if lim_flags_nan[i]:
+            parameters[i, 0] = "nan"
+            parameters[i, 1] = "nan"
+
+    data = []
+    plot_data = []
+    for i in range(0, len(parameters[:, 0])):
+        if not lim_flags_nan[i]:
+            plot_data.append(int(parameters[i, 0]))
+            data.append(parameters[i, 0])
+
+    (n, bins, hist) = plt.hist(data)
+
     if len(excl_channels) != 0:
         plt.title(
             r"\textbf{Thresholds from Charge Scan (excl. ch. "
@@ -215,7 +279,7 @@ def charge_scan(data, channels, conv_factor, output_folder):
     plt.xlabel("Threshold [keV]")
     plt.ylabel("Count")
 
-    mu, std = norm.fit(data)
+    mu, std = norm.fit(plot_data)
 
     matplotlib.pyplot.text(
         min(bins),

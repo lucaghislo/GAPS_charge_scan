@@ -1,17 +1,20 @@
-import os.path
 import pandas as pd
 import numpy as np
+import scipy
 
 
-def read_pedestals(filepath):
-    pedestal_data = pd.read_csv(filepath, sep="\t")
+def single_norm(x, *args):
+    (m1, s1, k1) = args
+    return k1 * scipy.stats.norm.pdf(x, loc=m1, scale=s1)
 
-    return pedestal_data
 
+def get_pedestal_auto(filepath_ped, ch):
+    # Get raw pedestal data from automated test
+    raw_pedestals = pd.read_csv(filepath_ped, sep="\t", comment="#", header=None)
+    raw_pedestals_ch = raw_pedestals[raw_pedestals.loc[:, 3] == ch]
+    raw_pedestals_ch = raw_pedestals_ch.loc[:, 4].to_numpy()
 
-def get_pedestal(pedestal_data, ch, pt):
-    pedestal_subset = pedestal_data[
-        (pedestal_data["ch"] == ch) & (pedestal_data["pt"] == pt)
-    ]
+    mean_ped = np.mean(raw_pedestals_ch)
+    ped_auto = mean_ped
 
-    return pedestal_subset["mean"]
+    return ped_auto

@@ -228,3 +228,22 @@ ch  thr           enc
 - `ENC_THR/ch#-#_THR_plot.pdf` and `ENC_THR/ch#-#_THR_plot_inj.pdf`: estimated threshold plot for all channels in specified range, with and without parasitic injection compensation.
 
 ![ch0-31_THR_plot_1](https://user-images.githubusercontent.com/36998696/216660939-9184ca9f-463d-4aff-8fd8-d3c7a6e68dab.png)
+
+- `summary_inj_ch#-#.dat` and `summary_inj_ch#-#_inj.dat`: estimated transfer function gain *tf_gain* [ADU/keV] and pedestal *tf_pedestal* [ADU] for all channels in specified range, with and without parasitic injection compensation. For every channel it's also provided the pedestal from automated test *auto_pedestal* [ADU]. The last column, *par_inj*, refers to the estimated parasitic injection [ADU].
+
+```
+ch  tf_gain  tf_pedestal auto_pedestal   par_inj
+0   1.01966  150.30685   139.243         11.06389
+[...]
+31  1.08302  156.381     141.505         14.876
+```
+
+- `ch#-#_activation_mask.txt` and `ch#-#_activation_mask_inj.txt`: channel activation mask. Channels below the threshold value provided by the user are automatically disabled. Unresponsive channels are also set to 0.
+
+```
+# Ch. 0 to 31
+11111111111111111111111111111001
+
+# Ch. 31 to 0
+10011111111111111111111111111111
+```

@@ -16,7 +16,7 @@ def charge_scan_noinj(
     # Legend font size
     matplotlib.rcParams["legend.fontsize"] = 10
 
-    thr_limit_NaN = 30
+    thr_limit_NaN = 300
 
     print("\nCHARGE SCAN")
     print("Charge scan without estimated parasitic injection\n")
@@ -125,6 +125,7 @@ def charge_scan_noinj(
 
     # Legend font size
     matplotlib.rcParams["legend.fontsize"] = 13
+
     ch_counter = 0
     for ch in channels:
         plt.clf()
@@ -240,8 +241,6 @@ def charge_scan_noinj(
     plot_data = []
     for i in range(0, len(parameters[:, 0])):
         if not lim_flags_nan[i]:
-            print(i)
-            print(parameters[i, 0])
             plot_data.append(int(parameters[i, 0]))
             data.append(parameters[i, 0])
 

@@ -19,6 +19,7 @@ def linear_model(x, m, q):
 def get_parasitic_injection(pedestal_filepath, fdt_filepath, ch, pt):
     # Read channel pedestal given peaking time
     pedestal_ch = get_pedestal_auto(pedestal_filepath, ch)
+    pedestal_ch = pedestal_ch * 0.841
 
     # Calculate transfer function linear gain and estimate pedestal
     (fdt_gain, fdt_pedestal) = get_linear_gain_realfdt(fdt_filepath, ch, pt, 200)

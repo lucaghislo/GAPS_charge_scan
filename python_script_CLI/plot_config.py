@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 # TEX INTERPRETER
 # Interpreter set to LaTex
-# plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
-plt.rcParams.update({"text.usetex": False})
+plt.rcParams.update({"text.usetex": True, "font.family": "serif"})
+# plt.rcParams.update({"text.usetex": False})
 # plt.rc("text.latex", preamble=r"\usepackage{asmath}")
 
 # FIGURE

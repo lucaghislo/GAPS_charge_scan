@@ -12,7 +12,7 @@ from erf_function import *
 # CHARGE SCAN
 def charge_scan(data, channels, conv_factor, output_folder):
 
-    thr_limit_NaN = 30
+    thr_limit_NaN = 300
 
     print("\nCHARGE SCAN\n")
     print("Working on it, be patient...\n")
@@ -222,8 +222,6 @@ def charge_scan(data, channels, conv_factor, output_folder):
     plot_data = []
     for i in range(0, len(parameters[:, 0])):
         if not lim_flags_nan[i]:
-            print(i)
-            print(parameters[i, 0])
             plot_data.append(int(parameters[i, 0]))
             data.append(parameters[i, 0])
 

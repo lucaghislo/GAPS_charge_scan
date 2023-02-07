@@ -11,7 +11,7 @@ def single_norm(x, *args):
 
 
 def get_pedestal_auto(filepath_ped, ch):
-    # Het raw pedestal data from automated test
+    # Get raw pedestal data from automated test
     raw_pedestals = pd.read_csv(filepath_ped, sep="\t", comment="#", header=None)
     raw_pedestals_ch = raw_pedestals[raw_pedestals.loc[:, 3] == ch]
     raw_pedestals_ch = raw_pedestals_ch.loc[:, 4].to_numpy()
@@ -35,5 +35,13 @@ def get_pedestal_auto(filepath_ped, ch):
     )
 
     ped_auto = fitted_params[0]
+
+    plt.clf()
+    plt.hist(
+        raw_pedestals_ch[
+            (raw_pedestals_ch >= mean_ped * 0.9) & (raw_pedestals_ch <= mean_ped * 1.1)
+        ],
+        bins=np.arange(mean_ped * 0.9, mean_ped * 1.1, 1),
+    )
 
     return ped_auto

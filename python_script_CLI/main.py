@@ -63,7 +63,11 @@ while True:
         output_folder_filepath = output_folder_filepath.replace('"', "")
 
     # Ask threshold for channel deactivation
-    deactivate_thr = int(input("      Deactivate channels below [keV]: "))
+    deactivate_thr = input("      Deactivate channels below [keV]: ")
+    if deactivate_thr != "":
+        deactivate_thr = int(deactivate_thr)
+    else:
+        deactivate_thr = -500
 
     # Read data from file
     data = pd.read_csv(

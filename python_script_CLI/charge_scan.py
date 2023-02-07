@@ -1,6 +1,5 @@
 import os as os
 import numpy as np
-import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 from scipy.stats import norm
@@ -203,6 +202,7 @@ def charge_scan(data, channels, conv_factor, output_folder):
         ),
         "w",
     ) as filehandle:
+        filehandle.write("ch\tthr\tenc\n")
         for i in range(0, len(channels)):
             if not lim_flags_nan[i]:
                 filehandle.write(

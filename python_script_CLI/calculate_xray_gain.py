@@ -1,8 +1,6 @@
 from scipy.optimize import curve_fit
 from read_transfer_function import *
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib
 
 conv_factor = 0.841
 

@@ -1,7 +1,7 @@
 import os as os
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from pathlib import Path as path
 
 from plot_config import *
 from erf_function import *
@@ -12,13 +12,18 @@ from compute_par_inj import get_parasitic_injection
 
 
 while True:
-    # TODO check input correctness
     print("\n*** GAPS CHARGE SCAN TOOL v1.2 ***\n")
 
     # Request user input
-    filename_chargescan = input("    Charge or threshold scan filepath: ")
-    if filename_chargescan[0] == '"':
-        filename_chargescan = filename_chargescan.replace('"', "")
+    filename_chargescan_path_flag = False
+    if not filename_chargescan_path_flag:
+        filename_chargescan = input("    Charge or threshold scan filepath: ")
+        if filename_chargescan[0] == '"':
+            filename_chargescan = filename_chargescan.replace('"', "")
+        # Check if file exists
+        filename_chargescan_path = path(filename_chargescan)
+        filename_chargescan_path_flag = filename_chargescan_path.is_file()
+
     ch_min = int(input("                        First channel: "))
     ch_max = int(input("                         Last channel: "))
     excl_channels = input("  Excluded channels (comma separated): ")
@@ -78,11 +83,24 @@ while True:
 
         # Charge scan with removal of parasitic injection
         if comp_parinj_flag == "y":
+            # Write estimated parameters to file
+            summary_data_filepath = os.path.join(
+                output_folder_filepath,
+                "summary_inj_ch" + str(ch_min) + "-" + str(ch_max) + ".dat",
+            )
+            with open(summary_data_filepath, "w") as fp:
+                fp.write("ch\ttf_gain\ttf_pedestal\tauto_pedestal\tpar_inj\n")
+            fp.close()
+
             # Get parasitic injection estimate to get proper charge scan
             allch_par_inj_estimate = []
             for ch in channels:
                 ch_par_inj_estimate = get_parasitic_injection(
-                    filename_pedestal, filename_fdt, ch, peaking_time
+                    filename_pedestal,
+                    filename_fdt,
+                    ch,
+                    peaking_time,
+                    summary_data_filepath,
                 )
                 allch_par_inj_estimate.append(ch_par_inj_estimate)
 

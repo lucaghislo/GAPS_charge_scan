@@ -1,6 +1,5 @@
 import os as os
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
@@ -222,6 +221,7 @@ def charge_scan_noinj(
         ),
         "w",
     ) as filehandle:
+        filehandle.write("ch\tthr\tenc\n")
         for i in range(0, len(channels)):
             if not lim_flags_nan[i]:
                 filehandle.write(

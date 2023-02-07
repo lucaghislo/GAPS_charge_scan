@@ -16,23 +16,47 @@ while True:
 
     # Request user input
     filename_chargescan_path_flag = False
-    if not filename_chargescan_path_flag:
+    while not filename_chargescan_path_flag:
         filename_chargescan = input("    Charge or threshold scan filepath: ")
         if filename_chargescan[0] == '"':
             filename_chargescan = filename_chargescan.replace('"', "")
         # Check if file exists
-        filename_chargescan_path = path(filename_chargescan)
-        filename_chargescan_path_flag = filename_chargescan_path.is_file()
+        filename_chargescan_path_flag = path(filename_chargescan).is_file()
+        if not filename_chargescan_path_flag:
+            print("\nInvalid filepath!\n")
 
-    ch_min = int(input("                        First channel: "))
-    ch_max = int(input("                         Last channel: "))
-    excl_channels = input("  Excluded channels (comma separated): ")
+    chmin_check_flag = False
+    while not chmin_check_flag:
+        ch_min = int(input("                        First channel: "))
+        chmin_check_flag = ch_min >= 0 and ch_min <= 31
+        if not chmin_check_flag:
+            print("\nInvalid channel number!\n")
 
-    if excl_channels != "":
-        excl_channels = excl_channels.split(",")
-        excl_channels = [int(i) for i in excl_channels]
-    else:
-        excl_channels = []
+    chmax_check_flag = False
+    while not chmax_check_flag:
+        ch_max = int(input("                         Last channel: "))
+        chmax_check_flag = ch_max >= 0 and ch_max <= 31
+        if not chmax_check_flag:
+            print("\nInvalid channel number!\n")
+
+    excl_channels_check_flag = True
+    while excl_channels_check_flag:
+        excl_channels_check_flag = False
+        excl_channels = input("  Excluded channels (comma separated): ")
+
+        if excl_channels != "":
+            excl_channels = excl_channels.split(",")
+            excl_channels = [int(i) for i in excl_channels]
+
+            for ch in excl_channels:
+                temp_flag = ch < ch_min or ch > ch_max
+                excl_channels_check_flag = excl_channels_check_flag or temp_flag
+
+            if excl_channels_check_flag:
+                print("\nInvalid channel numbers in list!\n")
+
+        else:
+            excl_channels = []
 
     output_folder_filepath = input("               Output folder filepath: ")
     if output_folder_filepath[0] == '"':
@@ -64,18 +88,40 @@ while True:
 
     if charge_scan_flag:
         # Ask user to compensate parasitic injection or not
-        comp_parinj_flag = input("Compensate parasitic injection? (y/n): ")
+        comp_parinj_check = False
+        while not comp_parinj_check:
+            comp_parinj_flag = input("Compensate parasitic injection? (y/n): ")
+            comp_parinj_check = comp_parinj_flag == "y" or comp_parinj_flag == "n"
+            if not comp_parinj_check:
+                print('\nInvalid choice! Only "y" or "n" allowed!\n')
 
         # Charge scan with removal of parasitic injection
         if comp_parinj_flag == "y":
             # Get additional info when charge scan is selected and user wants to compensate parasitic injection
-            filename_pedestal = input("         Pedestal from automated test: ")
-            if filename_pedestal[0] == '"':
-                filename_pedestal = filename_pedestal.replace('"', "")
-            filename_fdt = input("Transfer function from automated test: ")
-            if filename_fdt[0] == '"':
-                filename_fdt = filename_fdt.replace('"', "")
-            peaking_time = int(input("                Peaking time (0 to 7): "))
+            pedestal_check_flag = False
+            while not pedestal_check_flag:
+                filename_pedestal = input("         Pedestal from automated test: ")
+                if filename_pedestal[0] == '"':
+                    filename_pedestal = filename_pedestal.replace('"', "")
+                pedestal_check_flag = path(filename_pedestal).is_file()
+                if not pedestal_check_flag:
+                    print("\nInvalid filepath!\n")
+
+            fdt_check_flag = False
+            while not fdt_check_flag:
+                filename_fdt = input("Transfer function from automated test: ")
+                if filename_fdt[0] == '"':
+                    filename_fdt = filename_fdt.replace('"', "")
+                fdt_check_flag = path(filename_fdt).is_file()
+                if not fdt_check_flag:
+                    print("\nInvalid filepath!\n")
+
+            pt_check_flag = False
+            while not pt_check_flag:
+                peaking_time = int(input("                Peaking time (0 to 7): "))
+                pt_check_flag = peaking_time >= 0 and peaking_time <= 7
+                if not pt_check_flag:
+                    print("\nInvalid peaking time!\n")
 
         # Charge scan without removal of parasitic injection
         # Always done

@@ -229,7 +229,7 @@ ch  thr           enc
 
 ![ch0-31_THR_plot_1](https://user-images.githubusercontent.com/36998696/216660939-9184ca9f-463d-4aff-8fd8-d3c7a6e68dab.png)
 
-- `summary_inj_ch#-#.dat` and `summary_inj_ch#-#_inj.dat`: estimated transfer function gain *tf_gain* [ADU/keV] and pedestal *tf_pedestal* [ADU] for all channels in specified range, with and without parasitic injection compensation. For every channel it's also provided the pedestal from automated test *auto_pedestal* [ADU]. The last column, *par_inj*, refers to the estimated parasitic injection [ADU].
+- `summary_inj_ch#-#.dat` and `summary_inj_ch#-#_inj.dat`: estimated transfer function gain *tf_gain* [ADU/keV] and pedestal *tf_pedestal* [ADU] for all channels in specified range, with and without parasitic injection compensation. For every channel it's also provided the pedestal from automated test *auto_pedestal* [ADU]. The last column, *par_inj*, refers to the estimated parasitic injection [keV].
 
 ```
 ch  tf_gain  tf_pedestal auto_pedestal   par_inj

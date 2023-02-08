@@ -63,12 +63,20 @@ The user is required to input the path of the folder where the results will be s
                Output folder filepath: C:\path\output_folder  
 ```
 
-#### Channel deactivation lower threshold
+#### Channel deactivation based on minimum threshold
 
 The user can input the threshold, in keV, below which channels are deactivated.
 
 ```
       Deactivate channels below [keV]: 30 
+```
+
+#### Channel deactivation based on maximum ENC
+
+The user can input the ENC, in keV, above which channels are deactivated.
+
+```
+ Deactivate channels with ENC > [keV]: 5
 ```
 
 #### Parasitic injection compensation
@@ -238,12 +246,10 @@ ch  tf_gain  tf_pedestal auto_pedestal   par_inj
 31  1.08302  156.381     141.505         14.876
 ```
 
-- `ch#-#_activation_mask.txt` and `ch#-#_activation_mask_inj.txt`: channel activation mask. Channels below the threshold value provided by the user are automatically disabled. Unresponsive channels are also set to 0.
+- `ch#-#_activation_mask.txt` and `ch#-#_activation_mask_inj.txt`: channel activation mask. Channels below the threshold value provided by the user are automatically disabled. Unresponsive channels are also set to 0. Mask is expressed in hexadecimal format with **channels listed from 31 to 0**.
+
+The example below referers to binary mask `10011111111111111111111111111111` where channels 29 and 30 have been deactivated based on the above mentioned criteria.
 
 ```
-# Ch. 0 to 31
-11111111111111111111111111111001
-
-# Ch. 31 to 0
-10011111111111111111111111111111
+0x9fffffff
 ```

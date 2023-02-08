@@ -17,6 +17,7 @@ def charge_scan_noinj(
     xmax,
     par_inj_pedestal,
     deactivate_thr,
+    deactivate_enc,
 ):
 
     # Legend font size
@@ -47,7 +48,9 @@ def charge_scan_noinj(
         lim_flag_nan = False
         if mu > thr_limit_NaN:
             lim_flag_nan = True
-        lim_flags_thr.append(mu < deactivate_thr or lim_flag_nan)
+        lim_flags_thr.append(
+            mu < deactivate_thr or sigma > deactivate_enc or lim_flag_nan
+        )
         lim_flags_nan.append(lim_flag_nan)
         plt.plot(
             inj_range,
@@ -256,14 +259,10 @@ def charge_scan_noinj(
 
             allch_flag = allch_flag + str(ch_flag)
 
-        filehandle.write(
-            "# Ch. " + str(np.min(channels)) + " to " + str(np.max(channels)) + "\n"
-        )
-        filehandle.write(allch_flag)
-        filehandle.write(
-            "\n\n# Ch. " + str(np.max(channels)) + " to " + str(np.min(channels)) + "\n"
-        )
-        filehandle.write(allch_flag[len(allch_flag) :: -1])
+        allch_flag_rev = allch_flag[len(allch_flag) :: -1]
+        allch_flag_bin_rev = int(allch_flag_rev, 2)
+        allch_flag_hex_rev = hex(allch_flag_bin_rev)
+        filehandle.write(allch_flag_hex_rev)
 
     filehandle.close()
 

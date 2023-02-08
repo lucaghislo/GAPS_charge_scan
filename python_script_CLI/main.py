@@ -69,6 +69,13 @@ while True:
     else:
         deactivate_thr = -500
 
+    # Ask ENC for channel deactivation
+    deactivate_enc = input(" Deactivate channels with ENC > [keV]: ")
+    if deactivate_enc != "":
+        deactivate_enc = int(deactivate_enc)
+    else:
+        deactivate_enc = 500
+
     # Read data from file
     data = pd.read_csv(
         filename_chargescan,
@@ -133,7 +140,12 @@ while True:
         # Charge scan without removal of parasitic injection
         # Always done
         (xmin, xmax) = charge_scan(
-            data, channels, conv_factor, output_folder_filepath, deactivate_thr
+            data,
+            channels,
+            conv_factor,
+            output_folder_filepath,
+            deactivate_thr,
+            deactivate_enc,
         )
 
         # Charge scan with removal of parasitic injection
@@ -169,6 +181,7 @@ while True:
                 xmax,
                 allch_par_inj_estimate,
                 deactivate_thr,
+                deactivate_enc,
             )
 
     else:

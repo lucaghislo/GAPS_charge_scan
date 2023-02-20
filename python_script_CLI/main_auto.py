@@ -11,7 +11,7 @@ from charge_scan import charge_scan
 from threshold_scan import threshold_scan
 from compute_par_inj import get_parasitic_injection
 
-root_filepath = r"C:\Users\ghisl\Downloads\charge_scan_layer\*"
+root_filepath = r"C:\Users\ghisl\Downloads\charge_scan_layer_3\*"
 leaf_filepath = r"data\ChargeScan_fast.dat"
 leaf_filepath_out = r"output"
 
@@ -35,8 +35,8 @@ for folder in all_folders:
 
     ch_min = 0
     ch_max = 31
-    deactivate_thr = -500
-    deactivate_enc = 500
+    deactivate_thr = 30
+    deactivate_enc = 10
     excl_channels = []
 
     # Configuration

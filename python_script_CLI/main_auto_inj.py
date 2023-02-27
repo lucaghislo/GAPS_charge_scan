@@ -11,7 +11,7 @@ from charge_scan import charge_scan
 from threshold_scan import threshold_scan
 from compute_par_inj import get_parasitic_injection
 
-root_filepath = r"C:\Users\ghisl\Downloads\charge_scan_layer_2\*"
+root_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_2\*"
 leaf_filepath = r"data\ChargeScan_fast.dat"
 leaf_filepath_out = r"output"
 
@@ -62,17 +62,11 @@ for folder in all_folders:
         deactivate_enc,
     )
 
-    additional_data_filepath = 
+    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\layer2_module_tests\*"
+    all_folders = glob.glob(additional_data_filepath)[1::]
 
-    # Get additional info when charge scan is selected and user wants to compensate parasitic injection
-    pedestal_check_flag = False
-    while not pedestal_check_flag:
-        filename_pedestal = input("         Pedestal from automated test: ")
-        if filename_pedestal[0] == '"':
-            filename_pedestal = filename_pedestal.replace('"', "")
-        pedestal_check_flag = path(filename_pedestal).is_file()
-        if not pedestal_check_flag:
-            print("\nInvalid filepath!\n")
+    # Pedestal
+    filename_pedestal = r""
 
     fdt_check_flag = False
     while not fdt_check_flag:

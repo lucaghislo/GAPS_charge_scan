@@ -53,7 +53,7 @@ alllayer_mask = join(
     + "_THR"
     + str(deactivate_thr)
     + "_ENC"
-    + str(deactivate_thr)
+    + str(deactivate_enc)
     + "_mask.txt",
 )
 if comp_inj_flag:
@@ -64,7 +64,7 @@ if comp_inj_flag:
         + "_THR"
         + str(deactivate_thr_inj)
         + "_ENC"
-        + str(deactivate_thr_inj)
+        + str(deactivate_enc_inj)
         + "_mask_inj.txt",
     )
 

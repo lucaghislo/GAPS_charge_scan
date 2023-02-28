@@ -30,7 +30,7 @@ if comp_inj_flag:
 # Do not edit
 root_filepath = join(root_filepath_base, "*")
 leaf_filepath = r"data\ChargeScan_fast.dat"
-leaf_filepath_out = r"output_noparinj"
+leaf_filepath_out = r"output"
 all_folders = glob.glob(root_filepath)
 all_folders = all_folders[1::]
 alllayer_mask = join(root_filepath_base, "layer" + str(layer) + "_mask.txt")

@@ -20,22 +20,53 @@ layer = 2
 root_filepath_base = (
     r"C:\Users\ghisl\Downloads\charge_scan_layers_computed\charge_scan_layer_2"
 )
+# Limits for channel deactivation without parasitic injection compensation
+deactivate_thr = 30  # THR [keV]
+deactivate_enc = 10  # ENC [keV]
 
 # Compensate parasitic injection?
 comp_inj_flag = True
 if comp_inj_flag:
     # Where pedestal and transfer function folders are located
     additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\layer2_module_tests"
+    # Limits for channel deactivation with parasitic injection compensation
+    deactivate_thr_inj = 15  # THR [keV]
+    deactivate_enc_inj = 10  # ENC [keV]
 
 # Do not edit
+# Configuration
+ch_min = 0
+ch_max = 31
+excl_channels = []
+conv_factor = 0.841
+channels = range(ch_min, ch_max + 1)
+channels = np.setdiff1d(channels, excl_channels)
 root_filepath = join(root_filepath_base, "*")
 leaf_filepath = r"data\ChargeScan_fast.dat"
 leaf_filepath_out = r"output"
 all_folders = glob.glob(root_filepath)
 all_folders = all_folders[1::]
-alllayer_mask = join(root_filepath_base, "layer" + str(layer) + "_mask.txt")
+alllayer_mask = join(
+    root_filepath_base,
+    "layer"
+    + str(layer)
+    + "_THR"
+    + str(deactivate_thr)
+    + "_ENC"
+    + str(deactivate_thr)
+    + "_mask.txt",
+)
 if comp_inj_flag:
-    alllayer_mask_inj = join(root_filepath_base, "layer" + str(layer) + "_mask_inj.txt")
+    alllayer_mask_inj = join(
+        root_filepath_base,
+        "layer"
+        + str(layer)
+        + "_THR"
+        + str(deactivate_thr_inj)
+        + "_ENC"
+        + str(deactivate_thr_inj)
+        + "_mask_inj.txt",
+    )
 
 for folder in all_folders:
     filename_chargescan = os.path.join(folder, leaf_filepath)
@@ -52,18 +83,6 @@ for folder in all_folders:
         sep="\t",
         header=None,
     )
-
-    # Configuration
-    ch_min = 0
-    ch_max = 31
-    deactivate_thr = 30
-    deactivate_enc = 10
-    excl_channels = []
-
-    # Configuration
-    conv_factor = 0.841
-    channels = range(ch_min, ch_max + 1)
-    channels = np.setdiff1d(channels, excl_channels)
 
     # Determine if charge scan or threshold scan
     n_events = data.iloc[0][2]
@@ -135,8 +154,8 @@ for folder in all_folders:
             xmin,
             xmax,
             allch_par_inj_estimate,
-            deactivate_thr,
-            deactivate_enc,
+            deactivate_thr_inj,
+            deactivate_enc_inj,
         )
 
     # Write activation mask to summary output file (no compensation)

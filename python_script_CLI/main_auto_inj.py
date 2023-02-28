@@ -53,6 +53,7 @@ for folder in all_folders:
         header=None,
     )
 
+    # Configuration
     ch_min = 0
     ch_max = 31
     deactivate_thr = 30

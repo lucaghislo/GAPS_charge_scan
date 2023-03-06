@@ -18,14 +18,14 @@ layer = 2
 
 # Where charge scan raw data folders are located
 root_filepath_base = (
-    r"C:\Users\ghisl\Downloads\charge_scan_layers_computed\charge_scan_layer_2"
+    r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_5"
 )
 # Limits for channel deactivation without parasitic injection compensation
 deactivate_thr = 30  # THR [keV]
 deactivate_enc = 10  # ENC [keV]
 
 # Compensate parasitic injection?
-comp_inj_flag = True
+comp_inj_flag = False
 if comp_inj_flag:
     # Where pedestal and transfer function folders are located
     additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\layer2_module_tests"
@@ -73,8 +73,8 @@ for folder in all_folders:
     output_folder_filepath = os.path.join(folder, leaf_filepath_out)
 
     # Change accordingly (by hand)
-    row = int(folder[82:83])
-    module = int(folder[84:85])
+    row = int(folder[125:126])
+    module = int(folder[127:128])
 
     # Read data from file
     data = pd.read_csv(

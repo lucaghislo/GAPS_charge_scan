@@ -17,21 +17,19 @@ from compute_par_inj import get_parasitic_injection
 layer = 2
 
 # Where charge scan raw data folders are located
-root_filepath_base = (
-    r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_5"
-)
+root_filepath_base = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_4"
 # Limits for channel deactivation without parasitic injection compensation
 deactivate_thr = 30  # THR [keV]
 deactivate_enc = 10  # ENC [keV]
 
 # Compensate parasitic injection?
-comp_inj_flag = False
+comp_inj_flag = True
 if comp_inj_flag:
     # Where pedestal and transfer function folders are located
-    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\layer2_module_tests"
+    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_4"
     # Limits for channel deactivation with parasitic injection compensation
-    deactivate_thr_inj = 15  # THR [keV]
-    deactivate_enc_inj = 10  # ENC [keV]
+    deactivate_thr_inj = 20  # THR [keV]
+    deactivate_enc_inj = 8  # ENC [keV]
 
 # Do not edit
 # Configuration
@@ -68,13 +66,18 @@ if comp_inj_flag:
         + "_mask_inj.txt",
     )
 
-for folder in all_folders:
+for folder_i in all_folders:
+    folder = glob.glob(join(folder_i, "*"))[1]
     filename_chargescan = os.path.join(folder, leaf_filepath)
     output_folder_filepath = os.path.join(folder, leaf_filepath_out)
 
     # Change accordingly (by hand)
-    row = int(folder[125:126])
-    module = int(folder[127:128])
+    row = int(folder[123:124])
+    module = int(folder[124:125])
+
+    print(folder)
+    print(row)
+    print(module)
 
     # Read data from file
     data = pd.read_csv(

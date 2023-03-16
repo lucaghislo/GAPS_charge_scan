@@ -14,10 +14,10 @@ from compute_par_inj import get_parasitic_injection
 
 # *** CONFIGURATION ***
 # Layer
-layer = 2
+layer = 0
 
 # Where charge scan raw data folders are located
-root_filepath_base = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_4"
+root_filepath_base = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_0"
 # Limits for channel deactivation without parasitic injection compensation
 deactivate_thr = 30  # THR [keV]
 deactivate_enc = 10  # ENC [keV]
@@ -26,7 +26,7 @@ deactivate_enc = 10  # ENC [keV]
 comp_inj_flag = True
 if comp_inj_flag:
     # Where pedestal and transfer function folders are located
-    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_4"
+    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_0"
     # Limits for channel deactivation with parasitic injection compensation
     deactivate_thr_inj = 20  # THR [keV]
     deactivate_enc_inj = 8  # ENC [keV]
@@ -41,7 +41,14 @@ channels = range(ch_min, ch_max + 1)
 channels = np.setdiff1d(channels, excl_channels)
 root_filepath = join(root_filepath_base, "*")
 leaf_filepath = r"data\ChargeScan_fast.dat"
-leaf_filepath_out = r"output"
+if comp_inj_flag:
+    leaf_filepath_out = (
+        r"output_THR" + str(deactivate_thr_inj) + r"_ENC" + str(deactivate_enc_inj)
+    )
+else:
+    leaf_filepath_out = (
+        r"output_THR" + str(deactivate_thr) + r"_ENC" + str(deactivate_enc)
+    )
 all_folders = glob.glob(root_filepath)
 all_folders = all_folders[1::]
 alllayer_mask = join(
@@ -65,6 +72,8 @@ if comp_inj_flag:
         + str(deactivate_enc_inj)
         + "_mask_inj.txt",
     )
+
+all_folders = [x for x in all_folders if "txt" not in x]
 
 for folder_i in all_folders:
     folder = glob.glob(join(folder_i, "*"))[1]
@@ -107,22 +116,21 @@ for folder_i in all_folders:
     if comp_inj_flag:
         filename_test = join(
             join(
-                join(
-                    additional_data_filepath,
-                    "MODULE" + str(layer) + str(row) + str(module) + "_fast",
-                ),
-                "*",
+                additional_data_filepath,
+                "MODULE" + str(layer) + str(row) + str(module) + "_fast",
             ),
-            "data",
+            "*",
         )
 
-        leaf_filepath_data = glob.glob(filename_test)[0]
+        leaf_filepath_data = glob.glob(filename_test)[1]
 
         # Pedestal
-        filename_pedestal = join(leaf_filepath_data, "Pedestals_tau5.dat")
+        filename_pedestal = join(leaf_filepath_data, join("data", "Pedestals_tau5.dat"))
 
         # Transfer function
-        filename_fdt = join(leaf_filepath_data, "TransferFunction_fast_tau5.dat")
+        filename_fdt = join(
+            leaf_filepath_data, join("data", "TransferFunction_fast_tau5.dat")
+        )
 
         # Peaking time
         peaking_time = 5

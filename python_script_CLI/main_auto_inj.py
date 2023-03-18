@@ -14,10 +14,10 @@ from compute_par_inj import get_parasitic_injection
 
 # *** CONFIGURATION ***
 # Layer
-layer = 0
+layer = 4
 
 # Where charge scan raw data folders are located
-root_filepath_base = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_0"
+root_filepath_base = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_4"
 # Limits for channel deactivation without parasitic injection compensation
 deactivate_thr = 30  # THR [keV]
 deactivate_enc = 10  # ENC [keV]
@@ -26,7 +26,7 @@ deactivate_enc = 10  # ENC [keV]
 comp_inj_flag = True
 if comp_inj_flag:
     # Where pedestal and transfer function folders are located
-    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_0"
+    additional_data_filepath = r"C:\Users\ghisl\Google Drive UniBG\UniBG\CORSI\PhD\GAPS\SSL_Berkeley\charge_scan_layers_computed\charge_scan_layer_4"
     # Limits for channel deactivation with parasitic injection compensation
     deactivate_thr_inj = 20  # THR [keV]
     deactivate_enc_inj = 8  # ENC [keV]
@@ -73,7 +73,7 @@ if comp_inj_flag:
         + "_mask_inj.txt",
     )
 
-all_folders = [x for x in all_folders if "txt" not in x]
+all_folders = [x for x in all_folders if "txt" not in x][1::]
 
 for folder_i in all_folders:
     folder = glob.glob(join(folder_i, "*"))[1]
